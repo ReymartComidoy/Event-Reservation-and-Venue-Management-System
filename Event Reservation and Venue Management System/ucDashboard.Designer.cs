@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucDashboard));
-            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             panel1 = new Panel();
             panel5 = new Panel();
             label12 = new Label();
@@ -54,6 +54,10 @@
             label1 = new Label();
             panel6 = new Panel();
             groupBox2 = new GroupBox();
+            button4 = new Button();
+            button3 = new Button();
+            button2 = new Button();
+            button5 = new Button();
             groupBox1 = new GroupBox();
             dataGridView1 = new DataGridView();
             Column1 = new DataGridViewTextBoxColumn();
@@ -64,10 +68,6 @@
             Column6 = new DataGridViewTextBoxColumn();
             button1 = new Button();
             textBox1 = new TextBox();
-            button5 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            button4 = new Button();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
@@ -85,7 +85,7 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.Gainsboro;
+            panel1.BackColor = Color.FromArgb(224, 224, 224);
             panel1.Controls.Add(panel5);
             panel1.Controls.Add(panel4);
             panel1.Controls.Add(panel3);
@@ -298,7 +298,9 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.BackColor = Color.FromArgb(224, 224, 224);
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.Black;
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
             label1.Size = new Size(217, 30);
@@ -329,6 +331,50 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Quick Actions";
             // 
+            // button4
+            // 
+            button4.BackColor = Color.FromArgb(33, 37, 41);
+            button4.ForeColor = Color.White;
+            button4.Location = new Point(6, 39);
+            button4.Name = "button4";
+            button4.Size = new Size(204, 52);
+            button4.TabIndex = 6;
+            button4.Text = "NEW RESERVATION";
+            button4.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            button3.BackColor = Color.FromArgb(33, 37, 41);
+            button3.ForeColor = Color.White;
+            button3.Location = new Point(6, 88);
+            button3.Name = "button3";
+            button3.Size = new Size(204, 52);
+            button3.TabIndex = 5;
+            button3.Text = "CHECK AVAILABILITY";
+            button3.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            button2.BackColor = Color.FromArgb(33, 37, 41);
+            button2.ForeColor = Color.White;
+            button2.Location = new Point(6, 135);
+            button2.Name = "button2";
+            button2.Size = new Size(204, 52);
+            button2.TabIndex = 4;
+            button2.Text = "ADD EVENT";
+            button2.UseVisualStyleBackColor = false;
+            // 
+            // button5
+            // 
+            button5.BackColor = Color.FromArgb(33, 37, 41);
+            button5.ForeColor = Color.White;
+            button5.Location = new Point(6, 181);
+            button5.Name = "button5";
+            button5.Size = new Size(204, 52);
+            button5.TabIndex = 3;
+            button5.Text = "GENERATE REPORT";
+            button5.UseVisualStyleBackColor = false;
+            // 
             // groupBox1
             // 
             groupBox1.Controls.Add(dataGridView1);
@@ -345,24 +391,24 @@
             // dataGridView1
             // 
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = SystemColors.Control;
-            dataGridViewCellStyle9.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle9.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
-            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2, Column3, Column4, Column5, Column6 });
-            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = SystemColors.Window;
-            dataGridViewCellStyle10.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle10.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = DataGridViewTriState.False;
-            dataGridView1.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridView1.Dock = DockStyle.Bottom;
             dataGridView1.Location = new Point(3, 55);
             dataGridView1.Name = "dataGridView1";
@@ -417,50 +463,6 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(361, 21);
             textBox1.TabIndex = 0;
-            // 
-            // button5
-            // 
-            button5.BackColor = Color.FromArgb(33, 37, 41);
-            button5.ForeColor = Color.White;
-            button5.Location = new Point(6, 181);
-            button5.Name = "button5";
-            button5.Size = new Size(204, 52);
-            button5.TabIndex = 3;
-            button5.Text = "GENERATE REPORT";
-            button5.UseVisualStyleBackColor = false;
-            // 
-            // button2
-            // 
-            button2.BackColor = Color.FromArgb(33, 37, 41);
-            button2.ForeColor = Color.White;
-            button2.Location = new Point(6, 135);
-            button2.Name = "button2";
-            button2.Size = new Size(204, 52);
-            button2.TabIndex = 4;
-            button2.Text = "ADD EVENT";
-            button2.UseVisualStyleBackColor = false;
-            // 
-            // button3
-            // 
-            button3.BackColor = Color.FromArgb(33, 37, 41);
-            button3.ForeColor = Color.White;
-            button3.Location = new Point(6, 88);
-            button3.Name = "button3";
-            button3.Size = new Size(204, 52);
-            button3.TabIndex = 5;
-            button3.Text = "CHECK AVAILABILITY";
-            button3.UseVisualStyleBackColor = false;
-            // 
-            // button4
-            // 
-            button4.BackColor = Color.FromArgb(33, 37, 41);
-            button4.ForeColor = Color.White;
-            button4.Location = new Point(6, 39);
-            button4.Name = "button4";
-            button4.Size = new Size(204, 52);
-            button4.TabIndex = 6;
-            button4.Text = "NEW RESERVATION";
-            button4.UseVisualStyleBackColor = false;
             // 
             // ucDashboard
             // 
