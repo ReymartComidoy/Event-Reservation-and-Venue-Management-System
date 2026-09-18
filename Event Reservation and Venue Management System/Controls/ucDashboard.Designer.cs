@@ -1,4 +1,4 @@
-﻿namespace Event_Reservation_and_Venue_Management_System
+﻿namespace Event_Reservation_and_Venue_Management_System.Controls
 {
     partial class ucDashboard
     {
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucDashboard));
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
@@ -132,7 +133,7 @@
             pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox4.TabIndex = 4;
             pictureBox4.TabStop = false;
-            pictureBox4.Click += pictureBox4_Click;
+            
             // 
             // label9
             // 
@@ -310,7 +311,7 @@
             panel6.Name = "panel6";
             panel6.Size = new Size(820, 400);
             panel6.TabIndex = 1;
-            panel6.Paint += panel6_Paint;
+            
             // 
             // groupBox2
             // 
@@ -441,7 +442,7 @@
             Controls.Add(panel1);
             Name = "ucDashboard";
             Size = new Size(820, 587);
-            Click += ucDashboard_Load;
+            
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel5.ResumeLayout(false);

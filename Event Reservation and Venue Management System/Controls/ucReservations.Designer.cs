@@ -1,4 +1,4 @@
-﻿namespace Event_Reservation_and_Venue_Management_System
+﻿namespace Event_Reservation_and_Venue_Management_System.Controls
 {
     partial class ucReservations
     {
@@ -34,6 +34,7 @@
             btnAddNewReservation = new Button();
             dgvReservations = new DataGridView();
             grpDetails = new GroupBox();
+            cmbVenue = new ComboBox();
             numTotalAmount = new NumericUpDown();
             btnDelete = new Button();
             btnCancel = new Button();
@@ -48,7 +49,6 @@
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
-            cmbVenue = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dgvReservations).BeginInit();
             grpDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numTotalAmount).BeginInit();
@@ -92,7 +92,7 @@
             btnAddNewReservation.TabIndex = 6;
             btnAddNewReservation.Text = "+ Add New Reservation";
             btnAddNewReservation.UseVisualStyleBackColor = false;
-            btnAddNewReservation.Click += btnAddNewReservation_Click;
+            btnAddNewReservation.Click += btnAddReservation_Click;
             // 
             // dgvReservations
             // 
@@ -126,6 +126,14 @@
             grpDetails.TabIndex = 8;
             grpDetails.TabStop = false;
             grpDetails.Text = "Reservation Details";
+            // 
+            // cmbVenue
+            // 
+            cmbVenue.FormattingEnabled = true;
+            cmbVenue.Location = new Point(465, 107);
+            cmbVenue.Name = "cmbVenue";
+            cmbVenue.Size = new Size(217, 25);
+            cmbVenue.TabIndex = 17;
             // 
             // numTotalAmount
             // 
@@ -256,14 +264,6 @@
             label2.Size = new Size(89, 17);
             label2.TabIndex = 0;
             label2.Text = "Client Name: ";
-            // 
-            // cmbVenue
-            // 
-            cmbVenue.FormattingEnabled = true;
-            cmbVenue.Location = new Point(465, 107);
-            cmbVenue.Name = "cmbVenue";
-            cmbVenue.Size = new Size(217, 25);
-            cmbVenue.TabIndex = 17;
             // 
             // ucReservations
             // 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Event_Reservation_and_Venue_Management_System
+namespace Event_Reservation_and_Venue_Management_System.Services
 {
     public enum ViewModule
     {

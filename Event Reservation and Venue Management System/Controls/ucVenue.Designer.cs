@@ -1,4 +1,4 @@
-﻿namespace Event_Reservation_and_Venue_Management_System
+﻿namespace Event_Reservation_and_Venue_Management_System.Controls
 {
     partial class ucVenue
     {
@@ -33,6 +33,7 @@
             btnAddNewVenue = new Button();
             dgvVenues = new DataGridView();
             groupBox1 = new GroupBox();
+            btnDelete = new Button();
             btnCancel = new Button();
             btnSave = new Button();
             cmbStatus = new ComboBox();
@@ -45,7 +46,6 @@
             label3 = new Label();
             txtVenueName = new TextBox();
             label2 = new Label();
-            btnDelete = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvVenues).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numCapacity).BeginInit();
@@ -80,7 +80,7 @@
             btnAddNewVenue.TabIndex = 5;
             btnAddNewVenue.Text = "+ Add New Venue";
             btnAddNewVenue.UseVisualStyleBackColor = false;
-            btnAddNewVenue.Click += btnAddNewVenue_Click;
+            btnAddNewVenue.Click += btnAddVenue_Click;
             // 
             // dgvVenues
             // 
@@ -112,6 +112,18 @@
             groupBox1.TabIndex = 7;
             groupBox1.TabStop = false;
             groupBox1.Text = "Add / Edit Venue Details";
+            // 
+            // btnDelete
+            // 
+            btnDelete.BackColor = Color.FromArgb(33, 37, 41);
+            btnDelete.ForeColor = SystemColors.Control;
+            btnDelete.Location = new Point(267, 137);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(122, 29);
+            btnDelete.TabIndex = 12;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = false;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnCancel
             // 
@@ -223,18 +235,6 @@
             label2.Size = new Size(82, 17);
             label2.TabIndex = 0;
             label2.Text = "Venue Name";
-            // 
-            // btnDelete
-            // 
-            btnDelete.BackColor = Color.FromArgb(33, 37, 41);
-            btnDelete.ForeColor = SystemColors.Control;
-            btnDelete.Location = new Point(267, 137);
-            btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(122, 29);
-            btnDelete.TabIndex = 12;
-            btnDelete.Text = "Delete";
-            btnDelete.UseVisualStyleBackColor = false;
-            btnDelete.Click += btnDelete_Click;
             // 
             // ucVenue
             // 

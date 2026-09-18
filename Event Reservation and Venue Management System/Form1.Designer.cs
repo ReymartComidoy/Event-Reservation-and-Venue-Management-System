@@ -1,4 +1,5 @@
 ﻿namespace Event_Reservation_and_Venue_Management_System
+
 {
     partial class Form1
     {
@@ -78,7 +79,7 @@
             btnClients.TabIndex = 5;
             btnClients.Text = "CLIENTS";
             btnClients.UseVisualStyleBackColor = true;
-            btnClients.Click += btnClients_Click;
+            
             // 
             // btnReservations
             // 
@@ -92,7 +93,7 @@
             btnReservations.TabIndex = 4;
             btnReservations.Text = "RESERVATIONS";
             btnReservations.UseVisualStyleBackColor = true;
-            btnReservations.Click += btnReservations_Click;
+            
             // 
             // btnVenues
             // 
@@ -106,7 +107,7 @@
             btnVenues.TabIndex = 3;
             btnVenues.Text = "VENUES";
             btnVenues.UseVisualStyleBackColor = true;
-            btnVenues.Click += btnVenues_Click;
+            
             // 
             // btnEvents
             // 
@@ -120,7 +121,7 @@
             btnEvents.TabIndex = 2;
             btnEvents.Text = "EVENTS";
             btnEvents.UseVisualStyleBackColor = true;
-            btnEvents.Click += btnEvents_Click;
+            
             // 
             // btnDashboard
             // 
@@ -134,7 +135,7 @@
             btnDashboard.TabIndex = 1;
             btnDashboard.Text = "DASHBOARD";
             btnDashboard.UseVisualStyleBackColor = true;
-            btnDashboard.Click += btnDashboard_Click;
+            
             // 
             // pnlMainContainer
             // 

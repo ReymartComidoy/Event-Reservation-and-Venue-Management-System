@@ -1,4 +1,4 @@
-﻿namespace Event_Reservation_and_Venue_Management_System
+﻿namespace Event_Reservation_and_Venue_Management_System.Controls
 {
     partial class ucEvents
     {
@@ -88,7 +88,7 @@
             btnAddNewEvent.TabIndex = 4;
             btnAddNewEvent.Text = "+ Add New Event";
             btnAddNewEvent.UseVisualStyleBackColor = false;
-            btnAddNewEvent.Click += btnAddNewEvent_Click;
+            btnAddNewEvent.Click += btnAddEvent_Click;
             // 
             // dgvEvents
             // 

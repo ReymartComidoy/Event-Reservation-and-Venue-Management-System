@@ -1,4 +1,4 @@
-﻿namespace Event_Reservation_and_Venue_Management_System
+﻿namespace Event_Reservation_and_Venue_Management_System.Controls
 {
     partial class ucClients
     {
@@ -91,7 +91,7 @@
             btnAddNewClient.TabIndex = 7;
             btnAddNewClient.Text = "+ Add New Client";
             btnAddNewClient.UseVisualStyleBackColor = false;
-            btnAddNewClient.Click += btnAddNewClient_Click;
+            btnAddNewClient.Click += btnAddClient_Click;
             // 
             // dgvClients
             // 
