@@ -29,45 +29,39 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucDashboard));
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             panel1 = new Panel();
             panel5 = new Panel();
             label12 = new Label();
-            label11 = new Label();
+            lblVenuesAvailableCount = new Label();
             pictureBox4 = new PictureBox();
             label9 = new Label();
             panel4 = new Panel();
-            label10 = new Label();
+            lblTotalBookingsTodayCount = new Label();
             pictureBox3 = new PictureBox();
             label8 = new Label();
             panel3 = new Panel();
             label7 = new Label();
-            label6 = new Label();
+            lblUpcomingReservationsCount = new Label();
             label5 = new Label();
             pictureBox2 = new PictureBox();
             panel2 = new Panel();
             label4 = new Label();
-            label3 = new Label();
+            lblActiveEventsCount = new Label();
             label2 = new Label();
             pictureBox1 = new PictureBox();
             label1 = new Label();
             panel6 = new Panel();
             groupBox2 = new GroupBox();
-            button4 = new Button();
-            button3 = new Button();
-            button2 = new Button();
-            button5 = new Button();
+            btnNewReservation = new Button();
+            btnCheckAvailability = new Button();
+            btnAddEvent = new Button();
+            btnGenerateReport = new Button();
             groupBox1 = new GroupBox();
-            dataGridView1 = new DataGridView();
-            Column1 = new DataGridViewTextBoxColumn();
-            Column2 = new DataGridViewTextBoxColumn();
-            Column3 = new DataGridViewTextBoxColumn();
-            Column4 = new DataGridViewTextBoxColumn();
-            Column5 = new DataGridViewTextBoxColumn();
-            Column6 = new DataGridViewTextBoxColumn();
-            button1 = new Button();
-            textBox1 = new TextBox();
+            dgvDashboardEvents = new DataGridView();
+            btnSearch = new Button();
+            txtSearch = new TextBox();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
@@ -80,7 +74,7 @@
             panel6.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvDashboardEvents).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -101,7 +95,7 @@
             // 
             panel5.BackColor = Color.White;
             panel5.Controls.Add(label12);
-            panel5.Controls.Add(label11);
+            panel5.Controls.Add(lblVenuesAvailableCount);
             panel5.Controls.Add(pictureBox4);
             panel5.Controls.Add(label9);
             panel5.Location = new Point(624, 45);
@@ -119,15 +113,15 @@
             label12.TabIndex = 3;
             label12.Text = "Out of 8";
             // 
-            // label11
+            // lblVenuesAvailableCount
             // 
-            label11.AutoSize = true;
-            label11.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label11.Location = new Point(73, 43);
-            label11.Name = "label11";
-            label11.Size = new Size(33, 37);
-            label11.TabIndex = 4;
-            label11.Text = "0";
+            lblVenuesAvailableCount.AutoSize = true;
+            lblVenuesAvailableCount.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblVenuesAvailableCount.Location = new Point(73, 43);
+            lblVenuesAvailableCount.Name = "lblVenuesAvailableCount";
+            lblVenuesAvailableCount.Size = new Size(33, 37);
+            lblVenuesAvailableCount.TabIndex = 4;
+            lblVenuesAvailableCount.Text = "0";
             // 
             // pictureBox4
             // 
@@ -153,7 +147,7 @@
             // panel4
             // 
             panel4.BackColor = Color.White;
-            panel4.Controls.Add(label10);
+            panel4.Controls.Add(lblTotalBookingsTodayCount);
             panel4.Controls.Add(pictureBox3);
             panel4.Controls.Add(label8);
             panel4.Location = new Point(419, 45);
@@ -161,15 +155,15 @@
             panel4.Size = new Size(174, 117);
             panel4.TabIndex = 2;
             // 
-            // label10
+            // lblTotalBookingsTodayCount
             // 
-            label10.AutoSize = true;
-            label10.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label10.Location = new Point(80, 43);
-            label10.Name = "label10";
-            label10.Size = new Size(33, 37);
-            label10.TabIndex = 3;
-            label10.Text = "0";
+            lblTotalBookingsTodayCount.AutoSize = true;
+            lblTotalBookingsTodayCount.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTotalBookingsTodayCount.Location = new Point(80, 43);
+            lblTotalBookingsTodayCount.Name = "lblTotalBookingsTodayCount";
+            lblTotalBookingsTodayCount.Size = new Size(33, 37);
+            lblTotalBookingsTodayCount.TabIndex = 3;
+            lblTotalBookingsTodayCount.Text = "0";
             // 
             // pictureBox3
             // 
@@ -195,7 +189,7 @@
             // 
             panel3.BackColor = Color.White;
             panel3.Controls.Add(label7);
-            panel3.Controls.Add(label6);
+            panel3.Controls.Add(lblUpcomingReservationsCount);
             panel3.Controls.Add(label5);
             panel3.Controls.Add(pictureBox2);
             panel3.Location = new Point(221, 45);
@@ -213,15 +207,15 @@
             label7.TabIndex = 2;
             label7.Text = "this Month";
             // 
-            // label6
+            // lblUpcomingReservationsCount
             // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label6.Location = new Point(74, 43);
-            label6.Name = "label6";
-            label6.Size = new Size(33, 37);
-            label6.TabIndex = 2;
-            label6.Text = "0";
+            lblUpcomingReservationsCount.AutoSize = true;
+            lblUpcomingReservationsCount.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblUpcomingReservationsCount.Location = new Point(74, 43);
+            lblUpcomingReservationsCount.Name = "lblUpcomingReservationsCount";
+            lblUpcomingReservationsCount.Size = new Size(33, 37);
+            lblUpcomingReservationsCount.TabIndex = 2;
+            lblUpcomingReservationsCount.Text = "0";
             // 
             // label5
             // 
@@ -247,7 +241,7 @@
             // 
             panel2.BackColor = Color.White;
             panel2.Controls.Add(label4);
-            panel2.Controls.Add(label3);
+            panel2.Controls.Add(lblActiveEventsCount);
             panel2.Controls.Add(label2);
             panel2.Controls.Add(pictureBox1);
             panel2.Location = new Point(20, 45);
@@ -265,15 +259,15 @@
             label4.TabIndex = 1;
             label4.Text = "Last 30 days";
             // 
-            // label3
+            // lblActiveEventsCount
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(75, 43);
-            label3.Name = "label3";
-            label3.Size = new Size(33, 37);
-            label3.TabIndex = 1;
-            label3.Text = "0";
+            lblActiveEventsCount.AutoSize = true;
+            lblActiveEventsCount.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblActiveEventsCount.Location = new Point(75, 43);
+            lblActiveEventsCount.Name = "lblActiveEventsCount";
+            lblActiveEventsCount.Size = new Size(33, 37);
+            lblActiveEventsCount.TabIndex = 1;
+            lblActiveEventsCount.Text = "0";
             // 
             // label2
             // 
@@ -316,153 +310,128 @@
             panel6.Name = "panel6";
             panel6.Size = new Size(820, 400);
             panel6.TabIndex = 1;
+            panel6.Paint += panel6_Paint;
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(button4);
-            groupBox2.Controls.Add(button3);
-            groupBox2.Controls.Add(button2);
-            groupBox2.Controls.Add(button5);
+            groupBox2.Controls.Add(btnNewReservation);
+            groupBox2.Controls.Add(btnCheckAvailability);
+            groupBox2.Controls.Add(btnAddEvent);
+            groupBox2.Controls.Add(btnGenerateReport);
             groupBox2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             groupBox2.Location = new Point(601, 6);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(216, 239);
+            groupBox2.Size = new Size(216, 258);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "Quick Actions";
             // 
-            // button4
+            // btnNewReservation
             // 
-            button4.BackColor = Color.FromArgb(33, 37, 41);
-            button4.ForeColor = Color.White;
-            button4.Location = new Point(6, 39);
-            button4.Name = "button4";
-            button4.Size = new Size(204, 52);
-            button4.TabIndex = 6;
-            button4.Text = "NEW RESERVATION";
-            button4.UseVisualStyleBackColor = false;
+            btnNewReservation.BackColor = Color.FromArgb(33, 37, 41);
+            btnNewReservation.ForeColor = Color.White;
+            btnNewReservation.Location = new Point(6, 39);
+            btnNewReservation.Name = "btnNewReservation";
+            btnNewReservation.Size = new Size(204, 52);
+            btnNewReservation.TabIndex = 6;
+            btnNewReservation.Text = "NEW RESERVATION";
+            btnNewReservation.UseVisualStyleBackColor = false;
+            btnNewReservation.Click += btnNewReservation_Click;
             // 
-            // button3
+            // btnCheckAvailability
             // 
-            button3.BackColor = Color.FromArgb(33, 37, 41);
-            button3.ForeColor = Color.White;
-            button3.Location = new Point(6, 88);
-            button3.Name = "button3";
-            button3.Size = new Size(204, 52);
-            button3.TabIndex = 5;
-            button3.Text = "CHECK AVAILABILITY";
-            button3.UseVisualStyleBackColor = false;
+            btnCheckAvailability.BackColor = Color.FromArgb(33, 37, 41);
+            btnCheckAvailability.ForeColor = Color.White;
+            btnCheckAvailability.Location = new Point(6, 88);
+            btnCheckAvailability.Name = "btnCheckAvailability";
+            btnCheckAvailability.Size = new Size(204, 52);
+            btnCheckAvailability.TabIndex = 5;
+            btnCheckAvailability.Text = "CHECK AVAILABILITY";
+            btnCheckAvailability.UseVisualStyleBackColor = false;
+            btnCheckAvailability.Click += btnCheckAvailability_Click;
             // 
-            // button2
+            // btnAddEvent
             // 
-            button2.BackColor = Color.FromArgb(33, 37, 41);
-            button2.ForeColor = Color.White;
-            button2.Location = new Point(6, 135);
-            button2.Name = "button2";
-            button2.Size = new Size(204, 52);
-            button2.TabIndex = 4;
-            button2.Text = "ADD EVENT";
-            button2.UseVisualStyleBackColor = false;
+            btnAddEvent.BackColor = Color.FromArgb(33, 37, 41);
+            btnAddEvent.ForeColor = Color.White;
+            btnAddEvent.Location = new Point(6, 135);
+            btnAddEvent.Name = "btnAddEvent";
+            btnAddEvent.Size = new Size(204, 52);
+            btnAddEvent.TabIndex = 4;
+            btnAddEvent.Text = "ADD EVENT";
+            btnAddEvent.UseVisualStyleBackColor = false;
+            btnAddEvent.Click += btnAddEvent_Click;
             // 
-            // button5
+            // btnGenerateReport
             // 
-            button5.BackColor = Color.FromArgb(33, 37, 41);
-            button5.ForeColor = Color.White;
-            button5.Location = new Point(6, 181);
-            button5.Name = "button5";
-            button5.Size = new Size(204, 52);
-            button5.TabIndex = 3;
-            button5.Text = "GENERATE REPORT";
-            button5.UseVisualStyleBackColor = false;
+            btnGenerateReport.BackColor = Color.FromArgb(33, 37, 41);
+            btnGenerateReport.ForeColor = Color.White;
+            btnGenerateReport.Location = new Point(6, 181);
+            btnGenerateReport.Name = "btnGenerateReport";
+            btnGenerateReport.Size = new Size(204, 52);
+            btnGenerateReport.TabIndex = 3;
+            btnGenerateReport.Text = "GENERATE REPORT";
+            btnGenerateReport.UseVisualStyleBackColor = false;
+            btnGenerateReport.Click += btnGenerateReport_Click;
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(dataGridView1);
-            groupBox1.Controls.Add(button1);
-            groupBox1.Controls.Add(textBox1);
+            groupBox1.Controls.Add(dgvDashboardEvents);
+            groupBox1.Controls.Add(btnSearch);
+            groupBox1.Controls.Add(txtSearch);
             groupBox1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             groupBox1.Location = new Point(3, 6);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(590, 239);
+            groupBox1.Size = new Size(590, 258);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Current and Upcomming Events";
             // 
-            // dataGridView1
+            // dgvDashboardEvents
             // 
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2, Column3, Column4, Column5, Column6 });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
-            dataGridView1.Dock = DockStyle.Bottom;
-            dataGridView1.Location = new Point(3, 55);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.Size = new Size(584, 181);
-            dataGridView1.TabIndex = 2;
+            dgvDashboardEvents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvDashboardEvents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dgvDashboardEvents.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dgvDashboardEvents.DefaultCellStyle = dataGridViewCellStyle4;
+            dgvDashboardEvents.Dock = DockStyle.Bottom;
+            dgvDashboardEvents.Location = new Point(3, 74);
+            dgvDashboardEvents.Name = "dgvDashboardEvents";
+            dgvDashboardEvents.RowHeadersVisible = false;
+            dgvDashboardEvents.Size = new Size(584, 181);
+            dgvDashboardEvents.TabIndex = 2;
             // 
-            // Column1
+            // btnSearch
             // 
-            Column1.HeaderText = "Event Name";
-            Column1.Name = "Column1";
+            btnSearch.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnSearch.Location = new Point(373, 28);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new Size(75, 21);
+            btnSearch.TabIndex = 1;
+            btnSearch.Text = "Search";
+            btnSearch.UseVisualStyleBackColor = true;
             // 
-            // Column2
+            // txtSearch
             // 
-            Column2.HeaderText = "Venue";
-            Column2.Name = "Column2";
-            // 
-            // Column3
-            // 
-            Column3.HeaderText = "Date";
-            Column3.Name = "Column3";
-            // 
-            // Column4
-            // 
-            Column4.HeaderText = "Time";
-            Column4.Name = "Column4";
-            // 
-            // Column5
-            // 
-            Column5.HeaderText = "Status";
-            Column5.Name = "Column5";
-            // 
-            // Column6
-            // 
-            Column6.HeaderText = "Bookings";
-            Column6.Name = "Column6";
-            // 
-            // button1
-            // 
-            button1.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button1.Location = new Point(373, 28);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 21);
-            button1.TabIndex = 1;
-            button1.Text = "Search";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(6, 28);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(361, 21);
-            textBox1.TabIndex = 0;
+            txtSearch.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtSearch.Location = new Point(6, 28);
+            txtSearch.Multiline = true;
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(361, 21);
+            txtSearch.TabIndex = 0;
             // 
             // ucDashboard
             // 
@@ -490,7 +459,7 @@
             groupBox2.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvDashboardEvents).EndInit();
             ResumeLayout(false);
         }
 
@@ -504,34 +473,28 @@
         private Panel panel3;
         private PictureBox pictureBox1;
         private Label label2;
-        private Label label3;
+        private Label lblActiveEventsCount;
         private Label label4;
         private PictureBox pictureBox2;
         private Label label5;
         private Label label7;
-        private Label label6;
+        private Label lblUpcomingReservationsCount;
         private Label label8;
         private Label label9;
         private PictureBox pictureBox3;
-        private Label label10;
+        private Label lblTotalBookingsTodayCount;
         private PictureBox pictureBox4;
         private Label label12;
-        private Label label11;
+        private Label lblVenuesAvailableCount;
         private Panel panel6;
         private GroupBox groupBox2;
         private GroupBox groupBox1;
-        private DataGridView dataGridView1;
-        private Button button1;
-        private TextBox textBox1;
-        private DataGridViewTextBoxColumn Column1;
-        private DataGridViewTextBoxColumn Column2;
-        private DataGridViewTextBoxColumn Column3;
-        private DataGridViewTextBoxColumn Column4;
-        private DataGridViewTextBoxColumn Column5;
-        private DataGridViewTextBoxColumn Column6;
-        private Button button4;
-        private Button button3;
-        private Button button2;
-        private Button button5;
+        private DataGridView dgvDashboardEvents;
+        private Button btnSearch;
+        private TextBox txtSearch;
+        private Button btnNewReservation;
+        private Button btnCheckAvailability;
+        private Button btnAddEvent;
+        private Button btnGenerateReport;
     }
 }
