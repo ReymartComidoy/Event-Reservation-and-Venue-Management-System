@@ -98,16 +98,16 @@
             panel5.Controls.Add(lblVenuesAvailableCount);
             panel5.Controls.Add(pictureBox4);
             panel5.Controls.Add(label9);
-            panel5.Location = new Point(624, 45);
+            panel5.Location = new Point(614, 45);
             panel5.Name = "panel5";
-            panel5.Size = new Size(179, 117);
+            panel5.Size = new Size(187, 136);
             panel5.TabIndex = 2;
             // 
             // label12
             // 
             label12.AutoSize = true;
             label12.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label12.Location = new Point(73, 87);
+            label12.Location = new Point(73, 107);
             label12.Name = "label12";
             label12.Size = new Size(58, 17);
             label12.TabIndex = 3;
@@ -116,10 +116,10 @@
             // lblVenuesAvailableCount
             // 
             lblVenuesAvailableCount.AutoSize = true;
-            lblVenuesAvailableCount.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblVenuesAvailableCount.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblVenuesAvailableCount.Location = new Point(73, 43);
             lblVenuesAvailableCount.Name = "lblVenuesAvailableCount";
-            lblVenuesAvailableCount.Size = new Size(33, 37);
+            lblVenuesAvailableCount.Size = new Size(46, 54);
             lblVenuesAvailableCount.TabIndex = 4;
             lblVenuesAvailableCount.Text = "0";
             // 
@@ -150,18 +150,18 @@
             panel4.Controls.Add(lblTotalBookingsTodayCount);
             panel4.Controls.Add(pictureBox3);
             panel4.Controls.Add(label8);
-            panel4.Location = new Point(419, 45);
+            panel4.Location = new Point(409, 45);
             panel4.Name = "panel4";
-            panel4.Size = new Size(174, 117);
+            panel4.Size = new Size(199, 136);
             panel4.TabIndex = 2;
             // 
             // lblTotalBookingsTodayCount
             // 
             lblTotalBookingsTodayCount.AutoSize = true;
-            lblTotalBookingsTodayCount.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTotalBookingsTodayCount.Location = new Point(80, 43);
+            lblTotalBookingsTodayCount.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTotalBookingsTodayCount.Location = new Point(70, 43);
             lblTotalBookingsTodayCount.Name = "lblTotalBookingsTodayCount";
-            lblTotalBookingsTodayCount.Size = new Size(33, 37);
+            lblTotalBookingsTodayCount.Size = new Size(46, 54);
             lblTotalBookingsTodayCount.TabIndex = 3;
             lblTotalBookingsTodayCount.Text = "0";
             // 
@@ -192,16 +192,16 @@
             panel3.Controls.Add(lblUpcomingReservationsCount);
             panel3.Controls.Add(label5);
             panel3.Controls.Add(pictureBox2);
-            panel3.Location = new Point(221, 45);
+            panel3.Location = new Point(211, 45);
             panel3.Name = "panel3";
-            panel3.Size = new Size(174, 117);
+            panel3.Size = new Size(192, 136);
             panel3.TabIndex = 2;
             // 
             // label7
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.Location = new Point(74, 87);
+            label7.Location = new Point(65, 107);
             label7.Name = "label7";
             label7.Size = new Size(75, 17);
             label7.TabIndex = 2;
@@ -210,10 +210,10 @@
             // lblUpcomingReservationsCount
             // 
             lblUpcomingReservationsCount.AutoSize = true;
-            lblUpcomingReservationsCount.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUpcomingReservationsCount.Location = new Point(74, 43);
+            lblUpcomingReservationsCount.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblUpcomingReservationsCount.Location = new Point(65, 43);
             lblUpcomingReservationsCount.Name = "lblUpcomingReservationsCount";
-            lblUpcomingReservationsCount.Size = new Size(33, 37);
+            lblUpcomingReservationsCount.Size = new Size(46, 54);
             lblUpcomingReservationsCount.TabIndex = 2;
             lblUpcomingReservationsCount.Text = "0";
             // 
@@ -246,14 +246,14 @@
             panel2.Controls.Add(pictureBox1);
             panel2.Location = new Point(20, 45);
             panel2.Name = "panel2";
-            panel2.Size = new Size(174, 117);
+            panel2.Size = new Size(185, 136);
             panel2.TabIndex = 1;
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(75, 87);
+            label4.Location = new Point(68, 107);
             label4.Name = "label4";
             label4.Size = new Size(82, 17);
             label4.TabIndex = 1;
@@ -262,10 +262,10 @@
             // lblActiveEventsCount
             // 
             lblActiveEventsCount.AutoSize = true;
-            lblActiveEventsCount.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblActiveEventsCount.Location = new Point(75, 43);
+            lblActiveEventsCount.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblActiveEventsCount.Location = new Point(68, 43);
             lblActiveEventsCount.Name = "lblActiveEventsCount";
-            lblActiveEventsCount.Size = new Size(33, 37);
+            lblActiveEventsCount.Size = new Size(46, 54);
             lblActiveEventsCount.TabIndex = 1;
             lblActiveEventsCount.Text = "0";
             // 

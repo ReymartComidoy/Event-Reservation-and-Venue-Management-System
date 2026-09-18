@@ -13,35 +13,67 @@ namespace Event_Reservation_and_Venue_Management_System
 {
     public partial class ucReservations : UserControl
     {
-        private DataTable reservationTable;
         private int selectedRowIndex = -1; // -1 indicates adding a new reservation
+
         public ucReservations()
         {
             InitializeComponent();
 
-            // Run setup directly in constructor to guarantee immediate load
             ConfigureGrid();
-            InitializeData();
-            SetupDropdowns();
-            ClearForm();
 
-            // Register Event Handlers
-            txtSearch.TextChanged += FilterReservations;
-            cmbStatusFilter.SelectedIndexChanged += FilterReservations;
-            dgvReservations.CellClick += dgvReservations_CellClick;
-            dgvReservations.CellPainting += dgvReservations_CellPainting;
+            // Register Event Handlers safely
+            if (txtSearch != null) txtSearch.TextChanged += FilterReservations;
+            if (cmbStatusFilter != null) cmbStatusFilter.SelectedIndexChanged += FilterReservations;
+
+            if (dgvReservations != null)
+            {
+                dgvReservations.CellClick += dgvReservations_CellClick;
+                dgvReservations.CellPainting += dgvReservations_CellPainting;
+            }
+
+            if (btnAddNewReservation != null) btnAddNewReservation.Click += btnAddNewReservation_Click;
+            if (btnSave != null) btnSave.Click += btnSave_Click;
+            if (btnDelete != null) btnDelete.Click += btnDelete_Click;
+            if (btnCancel != null) btnCancel.Click += btnCancel_Click;
         }
 
         private void ucReservations_Load(object sender, EventArgs e)
         {
-
+            RefreshReservationData();
         }
+
+        // Auto-refresh dropdowns and grid when switching tabs
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (this.Visible)
+            {
+                RefreshReservationData();
+            }
+        }
+
+        public void RefreshReservationData()
+        {
+            SetupDropdowns();
+
+            // Bind directly to central DataRepository
+            dgvReservations.DataSource = null;
+            dgvReservations.AutoGenerateColumns = true;
+            dgvReservations.DataSource = DataRepository.ReservationsTable;
+
+            ClearForm();
+        }
+
         private void ConfigureGrid()
         {
-            numTotalAmount.Minimum = 0;
-            numTotalAmount.Maximum = 100000;
-            numTotalAmount.DecimalPlaces = 2;
+            if (numTotalAmount != null)
+            {
+                numTotalAmount.Minimum = 0;
+                numTotalAmount.Maximum = 100000;
+                numTotalAmount.DecimalPlaces = 2;
+            }
 
+            dgvReservations.AutoGenerateColumns = true;
             dgvReservations.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvReservations.RowHeadersVisible = false;
             dgvReservations.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -50,35 +82,49 @@ namespace Event_Reservation_and_Venue_Management_System
             dgvReservations.ColumnHeadersHeight = 35;
         }
 
-        private void InitializeData()
-        {
-            reservationTable = new DataTable();
-            reservationTable.Columns.Add("Reservation ID", typeof(string));
-            reservationTable.Columns.Add("Client Name", typeof(string));
-            reservationTable.Columns.Add("Event Name", typeof(string));
-            reservationTable.Columns.Add("Reservation Date", typeof(string));
-            reservationTable.Columns.Add("Total Amount ($)", typeof(string));
-            reservationTable.Columns.Add("Status", typeof(string));
-            reservationTable.Columns.Add("Notes", typeof(string));
-
-            // Populate sample data
-            reservationTable.Rows.Add("RES-1001", "Alice Smith", "Annual Tech Summit", "2026-10-15", "$1,200.00", "Confirmed", "Full deposit paid.");
-            reservationTable.Rows.Add("RES-1002", "Bob Johnson", "Corporate Gala", "2026-11-02", "$2,500.00", "Pending", "Awaiting client confirmation.");
-            reservationTable.Rows.Add("RES-1003", "Carol White", "Product Launch", "2026-09-01", "$850.00", "Cancelled", "Client requested cancellation.");
-            reservationTable.Rows.Add("RES-1004", "David Lee", "Executive Meeting", "2026-09-10", "$500.00", "Confirmed", "Paid via Credit Card.");
-
-            dgvReservations.DataSource = reservationTable;
-        }
-
         private void SetupDropdowns()
         {
-            // Clients
+            // Populate Clients from DataRepository
             cmbClient.Items.Clear();
-            cmbClient.Items.AddRange(new string[] { "Alice Smith", "Bob Johnson", "Carol White", "David Lee", "Smith Family" });
+            if (DataRepository.ClientsTable != null)
+            {
+                foreach (DataRow row in DataRepository.ClientsTable.Rows)
+                {
+                    string clientName = row["Client Name"]?.ToString();
+                    if (!string.IsNullOrEmpty(clientName) && !cmbClient.Items.Contains(clientName))
+                    {
+                        cmbClient.Items.Add(clientName);
+                    }
+                }
+            }
 
-            // Events
+            // Populate Events from DataRepository
             cmbEvent.Items.Clear();
-            cmbEvent.Items.AddRange(new string[] { "Annual Tech Summit", "Corporate Gala", "Product Launch", "Executive Meeting", "Wedding Reception" });
+            if (DataRepository.EventsTable != null)
+            {
+                foreach (DataRow row in DataRepository.EventsTable.Rows)
+                {
+                    string eventName = row["Event Name"]?.ToString();
+                    if (!string.IsNullOrEmpty(eventName) && !cmbEvent.Items.Contains(eventName))
+                    {
+                        cmbEvent.Items.Add(eventName);
+                    }
+                }
+            }
+
+            // Populate Venues from DataRepository
+            cmbVenue.Items.Clear();
+            if (DataRepository.VenuesTable != null)
+            {
+                foreach (DataRow row in DataRepository.VenuesTable.Rows)
+                {
+                    string venueName = row["Venue Name"]?.ToString();
+                    if (!string.IsNullOrEmpty(venueName) && !cmbVenue.Items.Contains(venueName))
+                    {
+                        cmbVenue.Items.Add(venueName);
+                    }
+                }
+            }
 
             // Status Form Selection
             cmbStatus.Items.Clear();
@@ -91,30 +137,42 @@ namespace Event_Reservation_and_Venue_Management_System
             cmbStatusFilter.SelectedIndex = 0;
         }
 
-        // --- 2. Real-Time Search & Status Filtering ---
+        // --- Real-Time Search & Status Filtering ---
         private void FilterReservations(object sender, EventArgs e)
         {
-            string searchKeyword = txtSearch.Text.Replace("'", "''").Trim();
-            if (searchKeyword == "Search Reservations...") searchKeyword = "";
-
-            string selectedStatus = cmbStatusFilter.SelectedItem?.ToString();
-            string filterExpression = "";
-
-            if (!string.IsNullOrEmpty(searchKeyword))
+            if (dgvReservations.DataSource is DataTable dt)
             {
-                filterExpression += $"([Client Name] LIKE '%{searchKeyword}%' OR [Event Name] LIKE '%{searchKeyword}%' OR [Reservation ID] LIKE '%{searchKeyword}%')";
-            }
+                string searchKeyword = txtSearch.Text.Replace("'", "''").Trim();
+                if (searchKeyword == "Search Reservations...") searchKeyword = "";
 
-            if (!string.IsNullOrEmpty(selectedStatus) && selectedStatus != "All Statuses")
-            {
-                if (filterExpression.Length > 0) filterExpression += " AND ";
-                filterExpression += $"[Status] = '{selectedStatus}'";
-            }
+                string selectedStatus = cmbStatusFilter.SelectedItem?.ToString();
+                string filterExpression = "";
 
-            (dgvReservations.DataSource as DataTable).DefaultView.RowFilter = filterExpression;
+                if (!string.IsNullOrEmpty(searchKeyword))
+                {
+                    List<string> searchableCols = new List<string>();
+                    if (dt.Columns.Contains("Client Name")) searchableCols.Add($"[Client Name] LIKE '%{searchKeyword}%'");
+                    if (dt.Columns.Contains("Event Name")) searchableCols.Add($"[Event Name] LIKE '%{searchKeyword}%'");
+                    if (dt.Columns.Contains("Venue")) searchableCols.Add($"[Venue] LIKE '%{searchKeyword}%'");
+                    if (dt.Columns.Contains("Reservation ID")) searchableCols.Add($"[Reservation ID] LIKE '%{searchKeyword}%'");
+
+                    if (searchableCols.Count > 0)
+                    {
+                        filterExpression += $"({string.Join(" OR ", searchableCols)})";
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(selectedStatus) && selectedStatus != "All Statuses" && dt.Columns.Contains("Status"))
+                {
+                    if (filterExpression.Length > 0) filterExpression += " AND ";
+                    filterExpression += $"[Status] = '{selectedStatus}'";
+                }
+
+                dt.DefaultView.RowFilter = filterExpression;
+            }
         }
 
-        // --- 3. Selection & Data Binding ---
+        // --- Selection & Data Binding ---
         private void dgvReservations_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -126,24 +184,31 @@ namespace Event_Reservation_and_Venue_Management_System
             selectedRowIndex = rowIndex;
             DataGridViewRow row = dgvReservations.Rows[rowIndex];
 
-            cmbClient.SelectedItem = row.Cells["Client Name"].Value?.ToString();
-            cmbEvent.SelectedItem = row.Cells["Event Name"].Value?.ToString();
-            cmbStatus.SelectedItem = row.Cells["Status"].Value?.ToString();
-            txtNotes.Text = row.Cells["Notes"].Value?.ToString();
+            if (dgvReservations.Columns.Contains("Client Name")) cmbClient.SelectedItem = row.Cells["Client Name"].Value?.ToString();
+            if (dgvReservations.Columns.Contains("Event Name")) cmbEvent.SelectedItem = row.Cells["Event Name"].Value?.ToString();
+            if (dgvReservations.Columns.Contains("Venue")) cmbVenue.SelectedItem = row.Cells["Venue"].Value?.ToString();
+            if (dgvReservations.Columns.Contains("Status")) cmbStatus.SelectedItem = row.Cells["Status"].Value?.ToString();
 
-            if (DateTime.TryParse(row.Cells["Reservation Date"].Value?.ToString(), out DateTime parsedDate))
+            string dateCol = dgvReservations.Columns.Contains("Reservation Date") ? "Reservation Date" : "Date";
+            if (dgvReservations.Columns.Contains(dateCol) && DateTime.TryParse(row.Cells[dateCol].Value?.ToString(), out DateTime parsedDate))
             {
                 dtpReservationDate.Value = parsedDate;
             }
 
-            string rawAmount = row.Cells["Total Amount ($)"].Value?.ToString().Replace("$", "").Replace(",", "").Trim();
-            if (decimal.TryParse(rawAmount, out decimal amount))
+            string amountCol = dgvReservations.Columns.Contains("Total Amount ($)") ? "Total Amount ($)" :
+                                dgvReservations.Columns.Contains("Total Amount") ? "Total Amount" : "Amount";
+
+            if (dgvReservations.Columns.Contains(amountCol))
             {
-                numTotalAmount.Value = amount;
+                string rawAmount = row.Cells[amountCol].Value?.ToString().Replace("$", "").Replace(",", "").Trim();
+                if (decimal.TryParse(rawAmount, out decimal amount))
+                {
+                    numTotalAmount.Value = amount;
+                }
             }
         }
 
-        // --- 4. CRUD Actions ---
+        // --- CRUD Actions ---
         private void btnAddNewReservation_Click(object sender, EventArgs e)
         {
             ClearForm();
@@ -152,10 +217,9 @@ namespace Event_Reservation_and_Venue_Management_System
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (cmbClient.SelectedItem == null || cmbEvent.SelectedItem == null || cmbStatus.SelectedItem == null)
+            if (cmbClient.SelectedItem == null || cmbEvent.SelectedItem == null || cmbVenue.SelectedItem == null || cmbStatus.SelectedItem == null)
             {
-                MessageBox.Show("Please fill out all required dropdown fields (Client, Event, Status).", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return; // Return silently without popup
             }
 
             string formattedAmount = $"${numTotalAmount.Value:N2}";
@@ -163,51 +227,76 @@ namespace Event_Reservation_and_Venue_Management_System
 
             if (selectedRowIndex >= 0 && selectedRowIndex < dgvReservations.Rows.Count)
             {
-                // Update Existing
-                DataGridViewRow row = dgvReservations.Rows[selectedRowIndex];
-                row.Cells["Client Name"].Value = cmbClient.SelectedItem.ToString();
-                row.Cells["Event Name"].Value = cmbEvent.SelectedItem.ToString();
-                row.Cells["Reservation Date"].Value = formattedDate;
-                row.Cells["Total Amount ($)"].Value = formattedAmount;
-                row.Cells["Status"].Value = cmbStatus.SelectedItem.ToString();
-                row.Cells["Notes"].Value = txtNotes.Text;
+                // Update Existing Row
+                DataGridViewRow gridRow = dgvReservations.Rows[selectedRowIndex];
+                if (gridRow.DataBoundItem is DataRowView drv)
+                {
+                    if (drv.Row.Table.Columns.Contains("Client Name")) drv["Client Name"] = cmbClient.SelectedItem.ToString();
+                    if (drv.Row.Table.Columns.Contains("Event Name")) drv["Event Name"] = cmbEvent.SelectedItem.ToString();
+                    if (drv.Row.Table.Columns.Contains("Venue")) drv["Venue"] = cmbVenue.SelectedItem.ToString();
+
+                    if (drv.Row.Table.Columns.Contains("Reservation Date")) drv["Reservation Date"] = formattedDate;
+                    else if (drv.Row.Table.Columns.Contains("Date")) drv["Date"] = formattedDate;
+
+                    if (drv.Row.Table.Columns.Contains("Total Amount ($)")) drv["Total Amount ($)"] = formattedAmount;
+                    else if (drv.Row.Table.Columns.Contains("Total Amount")) drv["Total Amount"] = formattedAmount;
+                    else if (drv.Row.Table.Columns.Contains("Amount")) drv["Amount"] = formattedAmount;
+
+                    if (drv.Row.Table.Columns.Contains("Status")) drv["Status"] = cmbStatus.SelectedItem.ToString();
+                }
             }
             else
             {
-                // Add New
-                string newId = $"RES-{1000 + reservationTable.Rows.Count + 1}";
-                reservationTable.Rows.Add(
-                    newId,
-                    cmbClient.SelectedItem.ToString(),
-                    cmbEvent.SelectedItem.ToString(),
-                    formattedDate,
-                    formattedAmount,
-                    cmbStatus.SelectedItem.ToString(),
-                    txtNotes.Text
-                );
+                // Add New Row matching DataRepository schema
+                DataRow newRow = DataRepository.ReservationsTable.NewRow();
+
+                if (DataRepository.ReservationsTable.Columns.Contains("Reservation ID"))
+                {
+                    newRow["Reservation ID"] = $"RES-00{DataRepository.ReservationsTable.Rows.Count + 1}";
+                }
+
+                if (DataRepository.ReservationsTable.Columns.Contains("Client Name")) newRow["Client Name"] = cmbClient.SelectedItem.ToString();
+                if (DataRepository.ReservationsTable.Columns.Contains("Event Name")) newRow["Event Name"] = cmbEvent.SelectedItem.ToString();
+                if (DataRepository.ReservationsTable.Columns.Contains("Venue")) newRow["Venue"] = cmbVenue.SelectedItem.ToString();
+
+                if (DataRepository.ReservationsTable.Columns.Contains("Reservation Date")) newRow["Reservation Date"] = formattedDate;
+                else if (DataRepository.ReservationsTable.Columns.Contains("Date")) newRow["Date"] = formattedDate;
+
+                if (DataRepository.ReservationsTable.Columns.Contains("Total Amount ($)")) newRow["Total Amount ($)"] = formattedAmount;
+                else if (DataRepository.ReservationsTable.Columns.Contains("Total Amount")) newRow["Total Amount"] = formattedAmount;
+                else if (DataRepository.ReservationsTable.Columns.Contains("Amount")) newRow["Amount"] = formattedAmount;
+
+                if (DataRepository.ReservationsTable.Columns.Contains("Status")) newRow["Status"] = cmbStatus.SelectedItem.ToString();
+
+                DataRepository.ReservationsTable.Rows.Add(newRow);
             }
 
-            ClearForm();
+            RefreshReservationData();
             MessageBox.Show("Reservation saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (selectedRowIndex < 0 || dgvReservations.SelectedRows.Count == 0)
+            // Return silently if no row selected
+            if (selectedRowIndex < 0 || selectedRowIndex >= dgvReservations.Rows.Count || dgvReservations.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select a reservation from the table to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string resId = dgvReservations.Rows[selectedRowIndex].Cells["Reservation ID"].Value?.ToString();
+            DataGridViewRow row = dgvReservations.Rows[selectedRowIndex];
+            string resId = dgvReservations.Columns.Contains("Reservation ID") ? row.Cells["Reservation ID"].Value?.ToString() : "selected reservation";
 
             DialogResult result = MessageBox.Show($"Are you sure you want to delete reservation '{resId}'?",
                 "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (result == DialogResult.Yes)
             {
-                dgvReservations.Rows.RemoveAt(selectedRowIndex);
-                ClearForm();
+                if (row.DataBoundItem is DataRowView drv)
+                {
+                    drv.Row.Delete();
+                }
+
+                RefreshReservationData();
                 MessageBox.Show("Reservation deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -222,14 +311,14 @@ namespace Event_Reservation_and_Venue_Management_System
             selectedRowIndex = -1;
             if (cmbClient.Items.Count > 0) cmbClient.SelectedIndex = -1;
             if (cmbEvent.Items.Count > 0) cmbEvent.SelectedIndex = -1;
+            if (cmbVenue.Items.Count > 0) cmbVenue.SelectedIndex = -1;
             if (cmbStatus.Items.Count > 0) cmbStatus.SelectedIndex = 0;
             dtpReservationDate.Value = DateTime.Now;
             numTotalAmount.Value = 0;
-            txtNotes.Clear();
             dgvReservations.ClearSelection();
         }
 
-        // --- 5. Custom Status Pill Rendering ---
+        // --- Custom Status Pill Rendering ---
         private void dgvReservations_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0 && dgvReservations.Columns[e.ColumnIndex].Name == "Status")

@@ -14,34 +14,61 @@ namespace Event_Reservation_and_Venue_Management_System
 {
     public partial class ucEvents : UserControl
     {
-        private DataTable eventTable;
         private int selectedRowIndex = -1; // Tracks which row is being edited (-1 = New Event)
 
         public ucEvents()
         {
             InitializeComponent();
 
-            // Call setup methods directly inside the constructor
+            // Configure Grid layout
             ConfigureGrid();
-            InitializeData();
-            SetupDropdowns();
-            ClearForm();
 
-            // Register Event Handlers
-            txtSearch.TextChanged += FilterEvents;
-            cmbVenueFilter.SelectedIndexChanged += FilterEvents;
-            dgvEvents.CellClick += dgvEvents_CellClick;
-            dgvEvents.CellPainting += dgvEvents_CellPainting;
+            // Register Search & Filter Handlers safely
+            if (txtSearch != null) txtSearch.TextChanged += FilterEvents;
+            if (cmbVenueFilter != null) cmbVenueFilter.SelectedIndexChanged += FilterEvents;
+            if (dgvEvents != null)
+            {
+                dgvEvents.CellClick += dgvEvents_CellClick;
+                dgvEvents.CellPainting += dgvEvents_CellPainting;
+            }
+
+            // Register Action Button Handlers safely
+            if (btnAddNewEvent != null) btnAddNewEvent.Click += btnAddNewEvent_Click;
+            if (btnSave != null) btnSave.Click += btnSave_Click;
+            if (btnDelete != null) btnDelete.Click += btnDelete_Click;
+            if (btnCancel != null) btnCancel.Click += btnCancel_Click;
         }
 
         private void ucEvents_Load(object sender, EventArgs e)
         {
-
+            RefreshEventData();
         }
 
-        // --- 1. Grid Configuration & Sample Data ---
+        // Auto-refresh when tab becomes visible
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (this.Visible)
+            {
+                RefreshEventData();
+            }
+        }
+
+        public void RefreshEventData()
+        {
+            SetupDropdowns();
+
+            // Bind grid directly to shared DataRepository
+            dgvEvents.DataSource = null;
+            dgvEvents.AutoGenerateColumns = true;
+            dgvEvents.DataSource = DataRepository.EventsTable;
+
+            ClearForm();
+        }
+
         private void ConfigureGrid()
         {
+            dgvEvents.AutoGenerateColumns = true;
             dgvEvents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvEvents.RowHeadersVisible = false;
             dgvEvents.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -50,75 +77,59 @@ namespace Event_Reservation_and_Venue_Management_System
             dgvEvents.ColumnHeadersHeight = 35;
         }
 
-        private void InitializeData()
-        {
-            eventTable = new DataTable();
-            eventTable.Columns.Add("Event Name", typeof(string));
-            eventTable.Columns.Add("Venue", typeof(string));
-            eventTable.Columns.Add("Organizer", typeof(string));
-            eventTable.Columns.Add("Date", typeof(string));
-            eventTable.Columns.Add("Status", typeof(string));
-            eventTable.Columns.Add("Description", typeof(string));
-
-            // Pre-populate sample event data
-            eventTable.Rows.Add("Annual Tech Summit", "Grand Ballroom", "TechCorp", "2026-10-15", "Upcoming", "Global tech conference.");
-            eventTable.Rows.Add("Corporate Gala", "Auditorium", "Lune Events", "2026-11-02", "Upcoming", "Annual charity gala evening.");
-            eventTable.Rows.Add("Product Launch", "Garden Terrace", "InnovateX", "2026-09-01", "Completed", "New smartphone release.");
-            eventTable.Rows.Add("Executive Meeting", "Executive Boardroom", "Board Inc.", "2026-09-10", "Completed", "Q3 strategy review.");
-            eventTable.Rows.Add("Wedding Reception", "Outdoor Pavilion", "Smith Family", "2026-12-05", "Upcoming", "Private wedding reception.");
-
-            dgvEvents.DataSource = eventTable;
-        }
-
         private void SetupDropdowns()
         {
-            // Populate Venue selection list
-            string[] venues = new string[] {
-                "Grand Ballroom",
-                "Grand Ballroom B",
-                "Auditorium",
-                "Garden Terrace",
-                "Conference Rm A",
-                "VIP Lounge",
-                "Outdoor Pavilion",
-                "Executive Boardroom"
-            };
-
             cmbVenue.Items.Clear();
-            cmbVenue.Items.AddRange(venues);
-
-            // Populate Filter dropdown
             cmbVenueFilter.Items.Clear();
             cmbVenueFilter.Items.Add("All Venues");
-            cmbVenueFilter.Items.AddRange(venues);
-            cmbVenueFilter.SelectedIndex = 0;
+
+            // Dynamically load venue dropdown items from shared repository
+            if (DataRepository.VenuesTable != null)
+            {
+                foreach (DataRow row in DataRepository.VenuesTable.Rows)
+                {
+                    string venueName = row["Venue Name"]?.ToString();
+                    if (!string.IsNullOrEmpty(venueName))
+                    {
+                        cmbVenue.Items.Add(venueName);
+                        cmbVenueFilter.Items.Add(venueName);
+                    }
+                }
+            }
+
+            if (cmbVenueFilter.Items.Count > 0)
+            {
+                cmbVenueFilter.SelectedIndex = 0;
+            }
         }
 
-        // --- 2. Real-Time Search & Venue Filtering ---
+        // --- Real-Time Search & Venue Filtering ---
         private void FilterEvents(object sender, EventArgs e)
         {
-            string searchKeyword = txtSearch.Text.Replace("'", "''").Trim();
-            if (searchKeyword == "Search Events...") searchKeyword = "";
-
-            string selectedVenue = cmbVenueFilter.SelectedItem?.ToString();
-
-            string filterExpression = "";
-
-            if (!string.IsNullOrEmpty(searchKeyword))
+            if (dgvEvents.DataSource is DataTable dt)
             {
-                filterExpression += $"([Event Name] LIKE '%{searchKeyword}%' OR [Organizer] LIKE '%{searchKeyword}%')";
-            }
+                string searchKeyword = txtSearch.Text.Replace("'", "''").Trim();
+                if (searchKeyword == "Search Events...") searchKeyword = "";
 
-            if (!string.IsNullOrEmpty(selectedVenue) && selectedVenue != "All Venues")
-            {
-                if (filterExpression.Length > 0) filterExpression += " AND ";
-                filterExpression += $"[Venue] = '{selectedVenue.Replace("'", "''")}'";
-            }
+                string selectedVenue = cmbVenueFilter.SelectedItem?.ToString();
+                string filterExpression = "";
 
-            (dgvEvents.DataSource as DataTable).DefaultView.RowFilter = filterExpression;
+                if (!string.IsNullOrEmpty(searchKeyword))
+                {
+                    filterExpression += $"([Event Name] LIKE '%{searchKeyword}%' OR [Venue] LIKE '%{searchKeyword}%')";
+                }
+
+                if (!string.IsNullOrEmpty(selectedVenue) && selectedVenue != "All Venues")
+                {
+                    if (filterExpression.Length > 0) filterExpression += " AND ";
+                    filterExpression += $"[Venue] = '{selectedVenue.Replace("'", "''")}'";
+                }
+
+                dt.DefaultView.RowFilter = filterExpression;
+            }
         }
 
-        // --- 3. Grid Selection Handling ---
+        // --- Grid Selection Handling ---
         private void dgvEvents_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -131,8 +142,18 @@ namespace Event_Reservation_and_Venue_Management_System
             DataGridViewRow row = dgvEvents.Rows[rowIndex];
 
             txtEventName.Text = row.Cells["Event Name"].Value?.ToString();
-            cmbVenue.SelectedItem = row.Cells["Venue"].Value?.ToString();
-            txtDescription.Text = row.Cells["Description"].Value?.ToString();
+
+            string venueValue = row.Cells["Venue"].Value?.ToString();
+            if (cmbVenue.Items.Contains(venueValue))
+            {
+                cmbVenue.SelectedItem = venueValue;
+            }
+
+            // Load Bookings count into txtBookings
+            if (dgvEvents.Columns.Contains("Bookings") && txtBookings != null)
+            {
+                txtBookings.Text = row.Cells["Bookings"].Value?.ToString() ?? "0";
+            }
 
             if (DateTime.TryParse(row.Cells["Date"].Value?.ToString(), out DateTime parsedDate))
             {
@@ -140,7 +161,7 @@ namespace Event_Reservation_and_Venue_Management_System
             }
         }
 
-        // --- 4. CRUD Action Buttons ---
+        // --- CRUD Action Buttons ---
         private void btnAddNewEvent_Click(object sender, EventArgs e)
         {
             ClearForm();
@@ -151,8 +172,7 @@ namespace Event_Reservation_and_Venue_Management_System
         {
             if (string.IsNullOrWhiteSpace(txtEventName.Text))
             {
-                MessageBox.Show("Please enter an Event Name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return; // Returns silently without showing the error pop-up
             }
 
             if (cmbVenue.SelectedItem == null)
@@ -162,55 +182,71 @@ namespace Event_Reservation_and_Venue_Management_System
             }
 
             string formattedDate = dtpEventDate.Value.ToString("yyyy-MM-dd");
+            string formattedTime = "09:00 AM";
             string status = dtpEventDate.Value.Date >= DateTime.Now.Date ? "Upcoming" : "Completed";
+
+            // Parse Bookings TextBox input (defaults to 0 if invalid or empty)
+            int bookingsCount = 0;
+            if (txtBookings != null)
+            {
+                int.TryParse(txtBookings.Text.Trim(), out bookingsCount);
+            }
 
             if (selectedRowIndex >= 0 && selectedRowIndex < dgvEvents.Rows.Count)
             {
-                // Update Existing Event
-                DataGridViewRow row = dgvEvents.Rows[selectedRowIndex];
-                row.Cells["Event Name"].Value = txtEventName.Text;
-                row.Cells["Venue"].Value = cmbVenue.SelectedItem.ToString();
-                row.Cells["Date"].Value = formattedDate;
-                row.Cells["Status"].Value = status;
-                row.Cells["Description"].Value = txtDescription.Text;
+                // Update existing row safely
+                DataGridViewRow gridRow = dgvEvents.Rows[selectedRowIndex];
+                if (gridRow.DataBoundItem is DataRowView drv)
+                {
+                    drv["Event Name"] = txtEventName.Text.Trim();
+                    drv["Venue"] = cmbVenue.SelectedItem.ToString();
+                    drv["Date"] = formattedDate;
+                    drv["Time"] = formattedTime;
+                    drv["Status"] = status;
+                    if (drv.Row.Table.Columns.Contains("Bookings")) drv["Bookings"] = bookingsCount;
+                }
             }
             else
             {
-                // Add New Event
-                eventTable.Rows.Add(
-                    txtEventName.Text,
-                    cmbVenue.SelectedItem.ToString(),
-                    "Internal", // Default Organizer value
-                    formattedDate,
-                    status,
-                    txtDescription.Text
-                );
+                // Add new row matching DataRepository schema
+                DataRow newRow = DataRepository.EventsTable.NewRow();
+
+                if (DataRepository.EventsTable.Columns.Contains("Event Name")) newRow["Event Name"] = txtEventName.Text.Trim();
+                if (DataRepository.EventsTable.Columns.Contains("Venue")) newRow["Venue"] = cmbVenue.SelectedItem.ToString();
+                if (DataRepository.EventsTable.Columns.Contains("Date")) newRow["Date"] = formattedDate;
+                if (DataRepository.EventsTable.Columns.Contains("Time")) newRow["Time"] = formattedTime;
+                if (DataRepository.EventsTable.Columns.Contains("Status")) newRow["Status"] = status;
+                if (DataRepository.EventsTable.Columns.Contains("Bookings")) newRow["Bookings"] = bookingsCount;
+
+                DataRepository.EventsTable.Rows.Add(newRow);
             }
 
-            ClearForm();
+            RefreshEventData();
             MessageBox.Show("Event saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            // Ensure a row is selected before attempting deletion
-            if (selectedRowIndex < 0 || dgvEvents.SelectedRows.Count == 0)
+            // Silently return if no valid row is selected (prevents "No Selection" pop-up)
+            if (selectedRowIndex < 0 || selectedRowIndex >= dgvEvents.Rows.Count || dgvEvents.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select an event from the list to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string eventName = dgvEvents.Rows[selectedRowIndex].Cells["Event Name"].Value?.ToString();
+            DataGridViewRow row = dgvEvents.Rows[selectedRowIndex];
+            string eventName = row.Cells["Event Name"].Value?.ToString();
 
-            // Confirmation dialog
             DialogResult result = MessageBox.Show($"Are you sure you want to delete '{eventName}'?",
                 "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (result == DialogResult.Yes)
             {
-                // Remove from DataGridView / DataTable
-                dgvEvents.Rows.RemoveAt(selectedRowIndex);
-                ClearForm();
+                if (row.DataBoundItem is DataRowView drv)
+                {
+                    drv.Row.Delete(); // Safely remove from DataRepository
+                }
+
+                RefreshEventData();
                 MessageBox.Show("Event deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -226,11 +262,11 @@ namespace Event_Reservation_and_Venue_Management_System
             txtEventName.Clear();
             if (cmbVenue.Items.Count > 0) cmbVenue.SelectedIndex = 0;
             dtpEventDate.Value = DateTime.Now;
-            txtDescription.Clear();
+            if (txtBookings != null) txtBookings.Clear();
             dgvEvents.ClearSelection();
         }
 
-        // --- 5. Status Pill Custom Rendering ---
+        // --- Status Pill Rendering ---
         private void dgvEvents_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0 && dgvEvents.Columns[e.ColumnIndex].Name == "Status")
@@ -269,5 +305,4 @@ namespace Event_Reservation_and_Venue_Management_System
             return path;
         }
     }
-
 }

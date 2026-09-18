@@ -38,7 +38,6 @@
             btnDelete = new Button();
             btnCancel = new Button();
             btnSave = new Button();
-            txtNotes = new TextBox();
             label7 = new Label();
             cmbStatus = new ComboBox();
             label6 = new Label();
@@ -49,6 +48,7 @@
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
+            cmbVenue = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dgvReservations).BeginInit();
             grpDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numTotalAmount).BeginInit();
@@ -104,11 +104,11 @@
             // 
             // grpDetails
             // 
+            grpDetails.Controls.Add(cmbVenue);
             grpDetails.Controls.Add(numTotalAmount);
             grpDetails.Controls.Add(btnDelete);
             grpDetails.Controls.Add(btnCancel);
             grpDetails.Controls.Add(btnSave);
-            grpDetails.Controls.Add(txtNotes);
             grpDetails.Controls.Add(label7);
             grpDetails.Controls.Add(cmbStatus);
             grpDetails.Controls.Add(label6);
@@ -172,22 +172,14 @@
             btnSave.UseVisualStyleBackColor = false;
             btnSave.Click += btnSave_Click;
             // 
-            // txtNotes
-            // 
-            txtNotes.Location = new Point(465, 110);
-            txtNotes.Multiline = true;
-            txtNotes.Name = "txtNotes";
-            txtNotes.Size = new Size(217, 86);
-            txtNotes.TabIndex = 11;
-            // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(403, 107);
+            label7.Location = new Point(403, 110);
             label7.Name = "label7";
-            label7.Size = new Size(47, 17);
+            label7.Size = new Size(48, 17);
             label7.TabIndex = 10;
-            label7.Text = "Notes:";
+            label7.Text = "Venue:";
             // 
             // cmbStatus
             // 
@@ -265,6 +257,14 @@
             label2.TabIndex = 0;
             label2.Text = "Client Name: ";
             // 
+            // cmbVenue
+            // 
+            cmbVenue.FormattingEnabled = true;
+            cmbVenue.Location = new Point(465, 107);
+            cmbVenue.Name = "cmbVenue";
+            cmbVenue.Size = new Size(217, 25);
+            cmbVenue.TabIndex = 17;
+            // 
             // ucReservations
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -300,7 +300,6 @@
         private Label label4;
         private Label label3;
         private Label label2;
-        private TextBox txtNotes;
         private Label label7;
         private ComboBox cmbStatus;
         private Label label6;
@@ -309,5 +308,6 @@
         private Button btnCancel;
         private Button btnSave;
         private NumericUpDown numTotalAmount;
+        private ComboBox cmbVenue;
     }
 }

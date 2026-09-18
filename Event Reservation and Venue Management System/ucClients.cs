@@ -13,31 +13,66 @@ namespace Event_Reservation_and_Venue_Management_System
 {
     public partial class ucClients : UserControl
     {
-        private DataTable clientTable;
         private int selectedRowIndex = -1; // -1 indicates adding a new client
+
         public ucClients()
         {
             InitializeComponent();
 
-            // Run setup in constructor to guarantee immediate render
+            // Run setup in constructor
             ConfigureGrid();
-            InitializeData();
             SetupDropdowns();
-            ClearForm();
 
-            // Register Event Handlers
-            txtSearch.TextChanged += FilterClients;
-            cmbTypeFilter.SelectedIndexChanged += FilterClients;
-            dgvClients.CellClick += dgvClients_CellClick;
-            dgvClients.CellPainting += dgvClients_CellPainting;
+            // Register Event Handlers safely
+            if (txtSearch != null) txtSearch.TextChanged += FilterClients;
+            if (cmbTypeFilter != null) cmbTypeFilter.SelectedIndexChanged += FilterClients;
+
+            if (dgvClients != null)
+            {
+                dgvClients.CellClick += dgvClients_CellClick;
+                dgvClients.CellPainting += dgvClients_CellPainting;
+            }
+
+            if (btnAddNewClient != null) btnAddNewClient.Click += btnAddNewClient_Click;
+            if (btnSave != null) btnSave.Click += btnSave_Click;
+            if (btnDelete != null) btnDelete.Click += btnDelete_Click;
+            if (btnCancel != null) btnCancel.Click += btnCancel_Click;
         }
+
         private void ucClients_Load(object sender, EventArgs e)
         {
-
+            RefreshClientData();
         }
-        // --- 1. Grid Configuration & Initial Data ---
+
+        // Auto-refresh data when switching to this UserControl tab
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (this.Visible)
+            {
+                RefreshClientData();
+            }
+        }
+
+        public void RefreshClientData()
+        {
+            // Bind directly to central DataRepository
+            if (dgvClients != null)
+            {
+                dgvClients.DataSource = null;
+                dgvClients.AutoGenerateColumns = true;
+                dgvClients.DataSource = DataRepository.ClientsTable;
+            }
+
+            ClearForm();
+        }
+
+        // --- 1. Grid Configuration ---
         private void ConfigureGrid()
         {
+            if (dgvClients == null) return;
+
+            dgvClients.AutoGenerateColumns = true;
             dgvClients.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvClients.RowHeadersVisible = false;
             dgvClients.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -46,64 +81,65 @@ namespace Event_Reservation_and_Venue_Management_System
             dgvClients.ColumnHeadersHeight = 35;
         }
 
-        private void InitializeData()
-        {
-            clientTable = new DataTable();
-            clientTable.Columns.Add("Client ID", typeof(string));
-            clientTable.Columns.Add("Full Name", typeof(string));
-            clientTable.Columns.Add("Email Address", typeof(string));
-            clientTable.Columns.Add("Phone Number", typeof(string));
-            clientTable.Columns.Add("Company Name", typeof(string));
-            clientTable.Columns.Add("Client Type", typeof(string));
-            clientTable.Columns.Add("Status", typeof(string));
-
-            // Populate sample client records
-            clientTable.Rows.Add("CLT-1001", "Alice Smith", "alice@techcorp.com", "(555) 019-2831", "TechCorp Inc.", "Corporate", "Active");
-            clientTable.Rows.Add("CLT-1002", "Bob Johnson", "b.johnson@gmail.com", "(555) 014-4920", "N/A", "Individual", "Active");
-            clientTable.Rows.Add("CLT-1003", "Carol White", "cwhite@innovatex.io", "(555) 018-3319", "InnovateX", "Corporate", "Inactive");
-            clientTable.Rows.Add("CLT-1004", "David Lee", "david.lee@outlook.com", "(555) 012-7743", "Board Inc.", "Individual", "Active");
-
-            dgvClients.DataSource = clientTable;
-        }
-
         private void SetupDropdowns()
         {
             // Client Type Form Selection
-            cmbClientType.Items.Clear();
-            cmbClientType.Items.AddRange(new string[] { "Corporate", "Individual", "VIP" });
+            if (cmbClientType != null)
+            {
+                cmbClientType.Items.Clear();
+                cmbClientType.Items.AddRange(new string[] { "Corporate", "Individual", "VIP" });
+            }
 
             // Client Type Top Filter Selection
-            cmbTypeFilter.Items.Clear();
-            cmbTypeFilter.Items.Add("All Client Types");
-            cmbTypeFilter.Items.AddRange(new string[] { "Corporate", "Individual", "VIP" });
-            cmbTypeFilter.SelectedIndex = 0;
+            if (cmbTypeFilter != null)
+            {
+                cmbTypeFilter.Items.Clear();
+                cmbTypeFilter.Items.Add("All Client Types");
+                cmbTypeFilter.Items.AddRange(new string[] { "Corporate", "Individual", "VIP" });
+                cmbTypeFilter.SelectedIndex = 0;
+            }
 
             // Status Selection
-            cmbStatus.Items.Clear();
-            cmbStatus.Items.AddRange(new string[] { "Active", "Inactive" });
+            if (cmbStatus != null)
+            {
+                cmbStatus.Items.Clear();
+                cmbStatus.Items.AddRange(new string[] { "Active", "Inactive" });
+            }
         }
 
         // --- 2. Live Search & Type Filtering ---
         private void FilterClients(object sender, EventArgs e)
         {
-            string searchKeyword = txtSearch.Text.Replace("'", "''").Trim();
-            if (searchKeyword == "Search Clients..." || searchKeyword == "Search Reservations...") searchKeyword = "";
-
-            string selectedType = cmbTypeFilter.SelectedItem?.ToString();
-            string filterExpression = "";
-
-            if (!string.IsNullOrEmpty(searchKeyword))
+            if (dgvClients?.DataSource is DataTable dt)
             {
-                filterExpression += $"([Full Name] LIKE '%{searchKeyword}%' OR [Email Address] LIKE '%{searchKeyword}%' OR [Company Name] LIKE '%{searchKeyword}%' OR [Client ID] LIKE '%{searchKeyword}%')";
-            }
+                string searchKeyword = txtSearch.Text.Replace("'", "''").Trim();
+                if (searchKeyword == "Search Clients...") searchKeyword = "";
 
-            if (!string.IsNullOrEmpty(selectedType) && selectedType != "All Client Types")
-            {
-                if (filterExpression.Length > 0) filterExpression += " AND ";
-                filterExpression += $"[Client Type] = '{selectedType}'";
-            }
+                string selectedType = cmbTypeFilter.SelectedItem?.ToString();
+                string filterExpression = "";
 
-            (dgvClients.DataSource as DataTable).DefaultView.RowFilter = filterExpression;
+                if (!string.IsNullOrEmpty(searchKeyword))
+                {
+                    List<string> searchableCols = new List<string>();
+                    if (dt.Columns.Contains("Client Name")) searchableCols.Add($"[Client Name] LIKE '%{searchKeyword}%'");
+                    if (dt.Columns.Contains("Email Address")) searchableCols.Add($"[Email Address] LIKE '%{searchKeyword}%'");
+                    if (dt.Columns.Contains("Company Name")) searchableCols.Add($"[Company Name] LIKE '%{searchKeyword}%'");
+                    if (dt.Columns.Contains("Client ID")) searchableCols.Add($"[Client ID] LIKE '%{searchKeyword}%'");
+
+                    if (searchableCols.Count > 0)
+                    {
+                        filterExpression += $"({string.Join(" OR ", searchableCols)})";
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(selectedType) && selectedType != "All Client Types" && dt.Columns.Contains("Client Type"))
+                {
+                    if (filterExpression.Length > 0) filterExpression += " AND ";
+                    filterExpression += $"[Client Type] = '{selectedType}'";
+                }
+
+                dt.DefaultView.RowFilter = filterExpression;
+            }
         }
 
         // --- 3. Row Selection Handling ---
@@ -118,12 +154,20 @@ namespace Event_Reservation_and_Venue_Management_System
             selectedRowIndex = rowIndex;
             DataGridViewRow row = dgvClients.Rows[rowIndex];
 
-            txtFullName.Text = row.Cells["Full Name"].Value?.ToString();
-            txtEmail.Text = row.Cells["Email Address"].Value?.ToString();
-            txtPhone.Text = row.Cells["Phone Number"].Value?.ToString();
-            txtCompany.Text = row.Cells["Company Name"].Value?.ToString();
-            cmbClientType.SelectedItem = row.Cells["Client Type"].Value?.ToString();
-            cmbStatus.SelectedItem = row.Cells["Status"].Value?.ToString();
+            if (dgvClients.Columns.Contains("Client Name")) txtFullName.Text = row.Cells["Client Name"].Value?.ToString();
+            if (dgvClients.Columns.Contains("Email Address")) txtEmail.Text = row.Cells["Email Address"].Value?.ToString();
+            if (dgvClients.Columns.Contains("Phone Number")) txtPhone.Text = row.Cells["Phone Number"].Value?.ToString();
+            if (dgvClients.Columns.Contains("Company Name")) txtCompany.Text = row.Cells["Company Name"].Value?.ToString();
+
+            if (dgvClients.Columns.Contains("Client Type") && cmbClientType != null)
+            {
+                cmbClientType.SelectedItem = row.Cells["Client Type"].Value?.ToString();
+            }
+
+            if (dgvClients.Columns.Contains("Status") && cmbStatus != null)
+            {
+                cmbStatus.SelectedItem = row.Cells["Status"].Value?.ToString();
+            }
         }
 
         // --- 4. Form Action Buttons ---
@@ -137,8 +181,7 @@ namespace Event_Reservation_and_Venue_Management_System
         {
             if (string.IsNullOrWhiteSpace(txtFullName.Text))
             {
-                MessageBox.Show("Please enter the client's Full Name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return; // Return silently without popup
             }
 
             if (cmbClientType.SelectedItem == null || cmbStatus.SelectedItem == null)
@@ -148,54 +191,68 @@ namespace Event_Reservation_and_Venue_Management_System
             }
 
             string companyName = string.IsNullOrWhiteSpace(txtCompany.Text) ? "N/A" : txtCompany.Text.Trim();
+            string fullName = txtFullName.Text.Trim();
+            string email = txtEmail.Text.Trim();
+            string phone = txtPhone.Text.Trim();
+            string clientType = cmbClientType.SelectedItem.ToString();
+            string status = cmbStatus.SelectedItem.ToString();
 
             if (selectedRowIndex >= 0 && selectedRowIndex < dgvClients.Rows.Count)
             {
-                // Update Existing Client
-                DataGridViewRow row = dgvClients.Rows[selectedRowIndex];
-                row.Cells["Full Name"].Value = txtFullName.Text.Trim();
-                row.Cells["Email Address"].Value = txtEmail.Text.Trim();
-                row.Cells["Phone Number"].Value = txtPhone.Text.Trim();
-                row.Cells["Company Name"].Value = companyName;
-                row.Cells["Client Type"].Value = cmbClientType.SelectedItem.ToString();
-                row.Cells["Status"].Value = cmbStatus.SelectedItem.ToString();
+                // Update Existing Client Row
+                DataGridViewRow gridRow = dgvClients.Rows[selectedRowIndex];
+                if (gridRow.DataBoundItem is DataRowView drv)
+                {
+                    if (drv.Row.Table.Columns.Contains("Client Name")) drv["Client Name"] = fullName;
+                    if (drv.Row.Table.Columns.Contains("Email Address")) drv["Email Address"] = email;
+                    if (drv.Row.Table.Columns.Contains("Phone Number")) drv["Phone Number"] = phone;
+                    if (drv.Row.Table.Columns.Contains("Company Name")) drv["Company Name"] = companyName;
+                    if (drv.Row.Table.Columns.Contains("Client Type")) drv["Client Type"] = clientType;
+                    if (drv.Row.Table.Columns.Contains("Status")) drv["Status"] = status;
+                }
             }
             else
             {
-                // Add New Client
-                string newId = $"CLT-{1000 + clientTable.Rows.Count + 1}";
-                clientTable.Rows.Add(
-                    newId,
-                    txtFullName.Text.Trim(),
-                    txtEmail.Text.Trim(),
-                    txtPhone.Text.Trim(),
-                    companyName,
-                    cmbClientType.SelectedItem.ToString(),
-                    cmbStatus.SelectedItem.ToString()
-                );
+                // Add New Client to shared DataRepository
+                string newId = $"CLT-{1000 + DataRepository.ClientsTable.Rows.Count + 1}";
+                DataRow newRow = DataRepository.ClientsTable.NewRow();
+
+                if (DataRepository.ClientsTable.Columns.Contains("Client ID")) newRow["Client ID"] = newId;
+                if (DataRepository.ClientsTable.Columns.Contains("Client Name")) newRow["Client Name"] = fullName;
+                if (DataRepository.ClientsTable.Columns.Contains("Email Address")) newRow["Email Address"] = email;
+                if (DataRepository.ClientsTable.Columns.Contains("Phone Number")) newRow["Phone Number"] = phone;
+                if (DataRepository.ClientsTable.Columns.Contains("Company Name")) newRow["Company Name"] = companyName;
+                if (DataRepository.ClientsTable.Columns.Contains("Client Type")) newRow["Client Type"] = clientType;
+                if (DataRepository.ClientsTable.Columns.Contains("Status")) newRow["Status"] = status;
+
+                DataRepository.ClientsTable.Rows.Add(newRow);
             }
 
-            ClearForm();
+            RefreshClientData();
             MessageBox.Show("Client details saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (selectedRowIndex < 0 || dgvClients.SelectedRows.Count == 0)
+            if (selectedRowIndex < 0 || selectedRowIndex >= dgvClients.Rows.Count || dgvClients.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select a client from the table to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return; // Return silently if no row selected
             }
 
-            string clientName = dgvClients.Rows[selectedRowIndex].Cells["Full Name"].Value?.ToString();
+            DataGridViewRow row = dgvClients.Rows[selectedRowIndex];
+            string clientName = dgvClients.Columns.Contains("Client Name") ? row.Cells["Client Name"].Value?.ToString() : "selected client";
 
             DialogResult result = MessageBox.Show($"Are you sure you want to delete client '{clientName}'?",
                 "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (result == DialogResult.Yes)
             {
-                dgvClients.Rows.RemoveAt(selectedRowIndex);
-                ClearForm();
+                if (row.DataBoundItem is DataRowView drv)
+                {
+                    drv.Row.Delete();
+                }
+
+                RefreshClientData();
                 MessageBox.Show("Client deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -212,9 +269,9 @@ namespace Event_Reservation_and_Venue_Management_System
             txtEmail.Clear();
             txtPhone.Clear();
             txtCompany.Clear();
-            if (cmbClientType.Items.Count > 0) cmbClientType.SelectedIndex = 0;
-            if (cmbStatus.Items.Count > 0) cmbStatus.SelectedIndex = 0;
-            dgvClients.ClearSelection();
+            if (cmbClientType != null && cmbClientType.Items.Count > 0) cmbClientType.SelectedIndex = 0;
+            if (cmbStatus != null && cmbStatus.Items.Count > 0) cmbStatus.SelectedIndex = 0;
+            if (dgvClients != null) dgvClients.ClearSelection();
         }
 
         // --- 5. Status Pill Custom Rendering ---
@@ -255,6 +312,5 @@ namespace Event_Reservation_and_Venue_Management_System
             path.CloseFigure();
             return path;
         }
-
     }
 }

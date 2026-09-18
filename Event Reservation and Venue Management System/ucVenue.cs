@@ -13,56 +13,65 @@ namespace Event_Reservation_and_Venue_Management_System
 {
     public partial class ucVenue : UserControl
     {
-        private DataTable venueTable;
         private int selectedRowIndex = -1; // -1 indicates adding a new venue
+
         public ucVenue()
         {
             InitializeComponent();
+
+            ConfigureGrid();
+
+            // Register event handlers safely
+            if (txtSearch != null) txtSearch.TextChanged += txtSearch_TextChanged;
+            if (dgvVenues != null)
+            {
+                dgvVenues.CellClick += dgvVenues_CellClick;
+                dgvVenues.CellPainting += dgvVenues_CellPainting;
+            }
+
+            if (btnAddNewVenue != null) btnAddNewVenue.Click += btnAddNewVenue_Click;
+            if (btnSave != null) btnSave.Click += btnSave_Click;
+            if (btnDelete != null) btnDelete.Click += btnDelete_Click;
+            if (btnCancel != null) btnCancel.Click += btnCancel_Click;
         }
+
         private void ucVenue_Load(object sender, EventArgs e)
         {
-            ConfigureGrid();
-            InitializeData();
-            SetupDropdowns();
-            ClearForm();
-
-            // Register event handlers
-            txtSearch.TextChanged += txtSearch_TextChanged;
-            dgvVenues.CellClick += dgvVenues_CellClick;
-            dgvVenues.CellPainting += dgvVenues_CellPainting;
+            RefreshVenueData();
         }
 
-        // --- 1. Grid Configuration & Pre-populated Data ---
+        // Auto-refresh when tab becomes visible
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (this.Visible)
+            {
+                RefreshVenueData();
+            }
+        }
+
+        public void RefreshVenueData()
+        {
+            SetupDropdowns();
+
+            // Bind grid directly to shared DataRepository
+            dgvVenues.DataSource = null;
+            dgvVenues.AutoGenerateColumns = true;
+            dgvVenues.DataSource = DataRepository.VenuesTable;
+
+            ClearForm();
+        }
+
+        // --- Grid Configuration ---
         private void ConfigureGrid()
         {
+            dgvVenues.AutoGenerateColumns = true;
             dgvVenues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvVenues.RowHeadersVisible = false;
             dgvVenues.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvVenues.AllowUserToAddRows = false;
             dgvVenues.RowTemplate.Height = 35;
             dgvVenues.ColumnHeadersHeight = 35;
-        }
-
-        private void InitializeData()
-        {
-            venueTable = new DataTable();
-            venueTable.Columns.Add("Venue Name", typeof(string));
-            venueTable.Columns.Add("Capacity", typeof(int));
-            venueTable.Columns.Add("Hourly Rate ($)", typeof(string));
-            venueTable.Columns.Add("Status", typeof(string));
-            venueTable.Columns.Add("Maintenance Notes", typeof(string));
-
-            // Populate with exact data from reference view
-            venueTable.Rows.Add("Grand Ballroom", 1000, "$30.00", "Available", "Routine check completed.");
-            venueTable.Rows.Add("Grand Ballroom B", 400, "$10.00", "Available", "None");
-            venueTable.Rows.Add("Auditorium", 2000, "$35.00", "Maintenance", "Audio system repair.");
-            venueTable.Rows.Add("Garden Terrace", 350, "$45.00", "Available", "Lawn manicured.");
-            venueTable.Rows.Add("Conference Rm A", 1000, "$25.00", "Available", "AC filter replaced.");
-            venueTable.Rows.Add("VIP Lounge", 30, "$10.00", "Maintenance", "Lighting upgrade.");
-            venueTable.Rows.Add("Outdoor Pavilion", 600, "$30.00", "Maintenance", "Roof inspection.");
-            venueTable.Rows.Add("Executive Boardroom", 300, "$50.00", "Available", "Projector calibrated.");
-
-            dgvVenues.DataSource = venueTable;
         }
 
         private void SetupDropdowns()
@@ -73,22 +82,24 @@ namespace Event_Reservation_and_Venue_Management_System
             cmbStatus.SelectedIndex = 0;
         }
 
-        // --- 2. Live Search Filtering ---
+        // --- Live Search Filtering ---
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            string filterText = txtSearch.Text.Replace("'", "''").Trim();
-            if (string.IsNullOrEmpty(filterText) || filterText == "search..")
+            if (dgvVenues.DataSource is DataTable dt)
             {
-                (dgvVenues.DataSource as DataTable).DefaultView.RowFilter = "";
-            }
-            else
-            {
-                (dgvVenues.DataSource as DataTable).DefaultView.RowFilter =
-                    $"[Venue Name] LIKE '%{filterText}%' OR [Status] LIKE '%{filterText}%'";
+                string filterText = txtSearch.Text.Replace("'", "''").Trim();
+                if (string.IsNullOrEmpty(filterText) || filterText == "search..")
+                {
+                    dt.DefaultView.RowFilter = "";
+                }
+                else
+                {
+                    dt.DefaultView.RowFilter = $"[Venue Name] LIKE '%{filterText}%' OR [Status] LIKE '%{filterText}%'";
+                }
             }
         }
 
-        // --- 3. Grid Row Selection ---
+        // --- Grid Row Selection ---
         private void dgvVenues_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -105,12 +116,27 @@ namespace Event_Reservation_and_Venue_Management_System
             if (int.TryParse(row.Cells["Capacity"].Value?.ToString(), out int cap))
                 numCapacity.Value = cap;
 
-            txtHourlyRate.Text = row.Cells["Hourly Rate ($)"].Value?.ToString().Replace("$", "");
-            cmbStatus.SelectedItem = row.Cells["Status"].Value?.ToString();
-            txtMaintenance.Text = row.Cells["Maintenance Notes"].Value?.ToString();
+            // Dynamically retrieve hourly rate regardless of ($) symbol in column header
+            string rateCol = dgvVenues.Columns.Contains("Hourly Rate ($)") ? "Hourly Rate ($)" :
+                            dgvVenues.Columns.Contains("Hourly Rate") ? "Hourly Rate" : "Rate";
+
+            if (dgvVenues.Columns.Contains(rateCol))
+            {
+                txtHourlyRate.Text = row.Cells[rateCol].Value?.ToString().Replace("$", "").Trim();
+            }
+
+            if (dgvVenues.Columns.Contains("Status"))
+            {
+                cmbStatus.SelectedItem = row.Cells["Status"].Value?.ToString();
+            }
+
+            if (dgvVenues.Columns.Contains("Maintenance Notes"))
+            {
+                txtMaintenance.Text = row.Cells["Maintenance Notes"].Value?.ToString();
+            }
         }
 
-        // --- 4. Form Action Buttons ---
+        // --- Form Action Buttons ---
         private void btnAddNewVenue_Click(object sender, EventArgs e)
         {
             ClearForm();
@@ -121,57 +147,77 @@ namespace Event_Reservation_and_Venue_Management_System
         {
             if (string.IsNullOrWhiteSpace(txtVenueName.Text))
             {
-                MessageBox.Show("Please enter a valid Venue Name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                return; // Returns silently without showing the error pop-up
             }
 
-            string formattedRate = txtHourlyRate.Text.StartsWith("$") ? txtHourlyRate.Text : $"${txtHourlyRate.Text.Trim()}";
+            string rawRate = txtHourlyRate.Text.Replace("$", "").Trim();
+            string formattedRate = string.IsNullOrWhiteSpace(rawRate) ? "$0.00" : $"${rawRate}";
 
             if (selectedRowIndex >= 0 && selectedRowIndex < dgvVenues.Rows.Count)
             {
-                // Update Existing Row
-                DataGridViewRow row = dgvVenues.Rows[selectedRowIndex];
-                row.Cells["Venue Name"].Value = txtVenueName.Text;
-                row.Cells["Capacity"].Value = (int)numCapacity.Value;
-                row.Cells["Hourly Rate ($)"].Value = formattedRate;
-                row.Cells["Status"].Value = cmbStatus.SelectedItem.ToString();
-                row.Cells["Maintenance Notes"].Value = txtMaintenance.Text;
+                // Update existing row directly via DataRowView
+                DataGridViewRow gridRow = dgvVenues.Rows[selectedRowIndex];
+                if (gridRow.DataBoundItem is DataRowView drv)
+                {
+                    drv["Venue Name"] = txtVenueName.Text.Trim();
+                    drv["Capacity"] = (int)numCapacity.Value;
+
+                    // Find matching column name in DataTable schema
+                    if (drv.Row.Table.Columns.Contains("Hourly Rate ($)")) drv["Hourly Rate ($)"] = formattedRate;
+                    else if (drv.Row.Table.Columns.Contains("Hourly Rate")) drv["Hourly Rate"] = formattedRate;
+                    else if (drv.Row.Table.Columns.Contains("Rate")) drv["Rate"] = formattedRate;
+
+                    if (drv.Row.Table.Columns.Contains("Status")) drv["Status"] = cmbStatus.SelectedItem.ToString();
+                    if (drv.Row.Table.Columns.Contains("Maintenance Notes")) drv["Maintenance Notes"] = txtMaintenance.Text.Trim();
+                }
             }
             else
             {
-                // Add New Row
-                venueTable.Rows.Add(
-                    txtVenueName.Text,
-                    (int)numCapacity.Value,
-                    formattedRate,
-                    cmbStatus.SelectedItem.ToString(),
-                    txtMaintenance.Text
-                );
+                // Add new row matching DataRepository.VenuesTable schema dynamically
+                DataRow newRow = DataRepository.VenuesTable.NewRow();
+                newRow["Venue Name"] = txtVenueName.Text.Trim();
+                newRow["Capacity"] = (int)numCapacity.Value;
+
+                if (DataRepository.VenuesTable.Columns.Contains("Hourly Rate ($)")) newRow["Hourly Rate ($)"] = formattedRate;
+                else if (DataRepository.VenuesTable.Columns.Contains("Hourly Rate")) newRow["Hourly Rate"] = formattedRate;
+                else if (DataRepository.VenuesTable.Columns.Contains("Rate")) newRow["Rate"] = formattedRate;
+
+                if (DataRepository.VenuesTable.Columns.Contains("Status")) newRow["Status"] = cmbStatus.SelectedItem.ToString();
+                if (DataRepository.VenuesTable.Columns.Contains("Maintenance Notes")) newRow["Maintenance Notes"] = txtMaintenance.Text.Trim();
+
+                DataRepository.VenuesTable.Rows.Add(newRow);
             }
 
-            ClearForm();
+            RefreshVenueData();
             MessageBox.Show("Venue record saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (selectedRowIndex < 0 || dgvVenues.SelectedRows.Count == 0)
+            // Silently return if no valid row is selected (prevents "No Selection" pop-up)
+            if (selectedRowIndex < 0 || selectedRowIndex >= dgvVenues.Rows.Count || dgvVenues.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select a venue from the list to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string venueName = dgvVenues.Rows[selectedRowIndex].Cells["Venue Name"].Value?.ToString();
+            DataGridViewRow row = dgvVenues.Rows[selectedRowIndex];
+            string venueName = row.Cells["Venue Name"].Value?.ToString();
 
             DialogResult confirm = MessageBox.Show($"Are you sure you want to delete '{venueName}'?",
                 "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (confirm == DialogResult.Yes)
             {
-                dgvVenues.Rows.RemoveAt(selectedRowIndex);
-                ClearForm();
+                if (row.DataBoundItem is DataRowView drv)
+                {
+                    drv.Row.Delete();
+                }
+
+                RefreshVenueData();
                 MessageBox.Show("Venue deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             ClearForm();
@@ -188,7 +234,7 @@ namespace Event_Reservation_and_Venue_Management_System
             dgvVenues.ClearSelection();
         }
 
-        // --- 5. Status Pill Custom Rendering ---
+        // --- Status Pill Custom Rendering ---
         private void dgvVenues_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0 && dgvVenues.Columns[e.ColumnIndex].Name == "Status")
@@ -227,6 +273,5 @@ namespace Event_Reservation_and_Venue_Management_System
             path.CloseFigure();
             return path;
         }
-
     }
 }

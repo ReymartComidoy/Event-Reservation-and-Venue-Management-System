@@ -31,14 +31,14 @@
             label1 = new Label();
             txtSearch = new TextBox();
             cmbVenueFilter = new ComboBox();
-            btnAddEvent = new Button();
+            btnAddNewEvent = new Button();
             dgvEvents = new DataGridView();
             groupBox1 = new GroupBox();
+            label5 = new Label();
             btnDelete = new Button();
             btnCancel = new Button();
             btnSave = new Button();
-            txtDescription = new TextBox();
-            label5 = new Label();
+            txtBookings = new TextBox();
             label4 = new Label();
             dtpEventDate = new DateTimePicker();
             cmbVenue = new ComboBox();
@@ -78,17 +78,17 @@
             cmbVenueFilter.Size = new Size(121, 23);
             cmbVenueFilter.TabIndex = 3;
             // 
-            // btnAddEvent
+            // btnAddNewEvent
             // 
-            btnAddEvent.BackColor = Color.FromArgb(33, 37, 41);
-            btnAddEvent.ForeColor = SystemColors.Control;
-            btnAddEvent.Location = new Point(411, 27);
-            btnAddEvent.Name = "btnAddEvent";
-            btnAddEvent.Size = new Size(122, 29);
-            btnAddEvent.TabIndex = 4;
-            btnAddEvent.Text = "+ Add New Event";
-            btnAddEvent.UseVisualStyleBackColor = false;
-            btnAddEvent.Click += btnAddNewEvent_Click;
+            btnAddNewEvent.BackColor = Color.FromArgb(33, 37, 41);
+            btnAddNewEvent.ForeColor = SystemColors.Control;
+            btnAddNewEvent.Location = new Point(411, 27);
+            btnAddNewEvent.Name = "btnAddNewEvent";
+            btnAddNewEvent.Size = new Size(122, 29);
+            btnAddNewEvent.TabIndex = 4;
+            btnAddNewEvent.Text = "+ Add New Event";
+            btnAddNewEvent.UseVisualStyleBackColor = false;
+            btnAddNewEvent.Click += btnAddNewEvent_Click;
             // 
             // dgvEvents
             // 
@@ -100,11 +100,11 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(btnDelete);
             groupBox1.Controls.Add(btnCancel);
             groupBox1.Controls.Add(btnSave);
-            groupBox1.Controls.Add(txtDescription);
-            groupBox1.Controls.Add(label5);
+            groupBox1.Controls.Add(txtBookings);
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(dtpEventDate);
             groupBox1.Controls.Add(cmbVenue);
@@ -118,6 +118,16 @@
             groupBox1.TabIndex = 6;
             groupBox1.TabStop = false;
             groupBox1.Text = "Event Details";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Location = new Point(357, 38);
+            label5.Name = "label5";
+            label5.Size = new Size(64, 17);
+            label5.TabIndex = 14;
+            label5.Text = "Bookings:";
             // 
             // btnDelete
             // 
@@ -155,30 +165,19 @@
             btnSave.UseVisualStyleBackColor = false;
             btnSave.Click += btnSave_Click;
             // 
-            // txtDescription
+            // txtBookings
             // 
-            txtDescription.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtDescription.Location = new Point(473, 67);
-            txtDescription.Multiline = true;
-            txtDescription.Name = "txtDescription";
-            txtDescription.Size = new Size(253, 78);
-            txtDescription.TabIndex = 7;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(473, 38);
-            label5.Name = "label5";
-            label5.Size = new Size(77, 17);
-            label5.TabIndex = 6;
-            label5.Text = "Description:";
+            txtBookings.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtBookings.Location = new Point(427, 33);
+            txtBookings.Name = "txtBookings";
+            txtBookings.Size = new Size(215, 25);
+            txtBookings.TabIndex = 7;
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(255, 77);
+            label4.Location = new Point(380, 77);
             label4.Name = "label4";
             label4.Size = new Size(38, 17);
             label4.TabIndex = 5;
@@ -187,9 +186,9 @@
             // dtpEventDate
             // 
             dtpEventDate.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dtpEventDate.Location = new Point(299, 69);
+            dtpEventDate.Location = new Point(427, 71);
             dtpEventDate.Name = "dtpEventDate";
-            dtpEventDate.Size = new Size(159, 25);
+            dtpEventDate.Size = new Size(215, 25);
             dtpEventDate.TabIndex = 4;
             // 
             // cmbVenue
@@ -198,7 +197,7 @@
             cmbVenue.FormattingEnabled = true;
             cmbVenue.Location = new Point(90, 69);
             cmbVenue.Name = "cmbVenue";
-            cmbVenue.Size = new Size(159, 25);
+            cmbVenue.Size = new Size(250, 25);
             cmbVenue.TabIndex = 3;
             // 
             // label3
@@ -216,7 +215,7 @@
             txtEventName.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtEventName.Location = new Point(90, 30);
             txtEventName.Name = "txtEventName";
-            txtEventName.Size = new Size(368, 25);
+            txtEventName.Size = new Size(250, 25);
             txtEventName.TabIndex = 1;
             // 
             // label2
@@ -235,7 +234,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(groupBox1);
             Controls.Add(dgvEvents);
-            Controls.Add(btnAddEvent);
+            Controls.Add(btnAddNewEvent);
             Controls.Add(cmbVenueFilter);
             Controls.Add(txtSearch);
             Controls.Add(label1);
@@ -254,19 +253,19 @@
         private Label label1;
         private TextBox txtSearch;
         private ComboBox cmbVenueFilter;
-        private Button btnAddEvent;
+        private Button btnAddNewEvent;
         private DataGridView dgvEvents;
         private GroupBox groupBox1;
         private ComboBox cmbVenue;
         private Label label3;
         private TextBox txtEventName;
         private Label label2;
-        private TextBox txtDescription;
-        private Label label5;
+        private TextBox txtBookings;
         private Label label4;
         private DateTimePicker dtpEventDate;
         private Button btnCancel;
         private Button btnSave;
         private Button btnDelete;
+        private Label label5;
     }
 }

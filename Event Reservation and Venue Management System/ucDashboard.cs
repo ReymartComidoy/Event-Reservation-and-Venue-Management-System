@@ -21,7 +21,6 @@ namespace Event_Reservation_and_Venue_Management_System
 
             // Run setup directly in constructor to guarantee immediate load
             ConfigureGrid();
-            InitializeDashboardData();
 
             // Register Event Handlers
             txtSearch.TextChanged += FilterEvents;
@@ -35,7 +34,26 @@ namespace Event_Reservation_and_Venue_Management_System
         private void ucDashboard_Load(object sender, EventArgs e)
         {
             // Kept empty to prevent double execution
+            RefreshDashboardData();
         }
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (this.Visible)
+            {
+                RefreshDashboardData();
+            }
+        }
+        public void RefreshDashboardData()
+        {
+            // Bind Shared Data from Centralized Repository
+            dgvDashboardEvents.DataSource = null;
+            dgvDashboardEvents.DataSource = DataRepository.EventsTable;
+
+            // Recalculate KPI Summary Cards Dynamically
+            UpdateMetrics();
+        }
+
         // --- 1. Grid Configuration & Pre-populated Data ---
         private void ConfigureGrid()
         {
@@ -46,53 +64,44 @@ namespace Event_Reservation_and_Venue_Management_System
             dgvDashboardEvents.RowTemplate.Height = 35;
             dgvDashboardEvents.ColumnHeadersHeight = 35;
         }
-
-        private void InitializeDashboardData()
-        {
-            dashboardTable = new DataTable();
-            dashboardTable.Columns.Add("Event Name", typeof(string));
-            dashboardTable.Columns.Add("Venue", typeof(string));
-            dashboardTable.Columns.Add("Date", typeof(string));
-            dashboardTable.Columns.Add("Time", typeof(string));
-            dashboardTable.Columns.Add("Status", typeof(string));
-            dashboardTable.Columns.Add("Bookings", typeof(int));
-
-            // Populate sample upcoming events
-            dashboardTable.Rows.Add("Annual Tech Summit", "Grand Ballroom", "2026-10-15", "09:00 AM", "Upcoming", 120);
-            dashboardTable.Rows.Add("Corporate Gala", "Auditorium", "2026-11-02", "06:00 PM", "Upcoming", 85);
-            dashboardTable.Rows.Add("Product Launch", "Garden Terrace", "2026-09-20", "02:00 PM", "Upcoming", 45);
-            dashboardTable.Rows.Add("Executive Meeting", "Executive Boardroom", "2026-09-18", "10:00 AM", "Ongoing", 15);
-            dashboardTable.Rows.Add("Wedding Reception", "Outdoor Pavilion", "2026-12-05", "04:00 PM", "Upcoming", 200);
-
-            dgvDashboardEvents.DataSource = dashboardTable;
-
-            // Load top KPI Card metrics
-            UpdateMetrics();
-        }
-
-        // --- 2. Real-Time Metrics & KPI Updates ---
         public void UpdateMetrics()
         {
-            // Dynamic metric counts
-            lblActiveEventsCount.Text = "5";
-            lblUpcomingReservationsCount.Text = "12";
-            lblTotalBookingsTodayCount.Text = "3";
-            lblVenuesAvailableCount.Text = "6"; // e.g., 6 Out of 8
-        }
+            // Dynamic metric counts derived directly from shared tables
+            if (DataRepository.EventsTable != null)
+            {
+                lblActiveEventsCount.Text = DataRepository.EventsTable.Rows.Count.ToString();
+            }
 
+            if (DataRepository.ReservationsTable != null)
+            {
+                lblUpcomingReservationsCount.Text = DataRepository.ReservationsTable.Rows.Count.ToString();
+            }
+
+            if (DataRepository.VenuesTable != null)
+            {
+                int totalVenues = DataRepository.VenuesTable.Rows.Count;
+                int availableVenues = DataRepository.VenuesTable.Select("[Status] = 'Available'").Length;
+                lblVenuesAvailableCount.Text = $"{availableVenues}"; // Displays count of available venues
+            }
+
+            lblTotalBookingsTodayCount.Text = "3"; // Keep or bind to daily bookings query
+        }
         // --- 3. Live Search Filtering ---
         private void FilterEvents(object sender, EventArgs e)
         {
             string searchKeyword = txtSearch.Text.Replace("'", "''").Trim();
 
-            if (string.IsNullOrEmpty(searchKeyword))
+            if (dgvDashboardEvents.DataSource is DataTable dt)
             {
-                (dgvDashboardEvents.DataSource as DataTable).DefaultView.RowFilter = "";
-            }
-            else
-            {
-                (dgvDashboardEvents.DataSource as DataTable).DefaultView.RowFilter =
-                    $"[Event Name] LIKE '%{searchKeyword}%' OR [Venue] LIKE '%{searchKeyword}%' OR [Status] LIKE '%{searchKeyword}%'";
+                if (string.IsNullOrEmpty(searchKeyword))
+                {
+                    dt.DefaultView.RowFilter = "";
+                }
+                else
+                {
+                    dt.DefaultView.RowFilter =
+                        $"[Event Name] LIKE '%{searchKeyword}%' OR [Venue] LIKE '%{searchKeyword}%' OR [Status] LIKE '%{searchKeyword}%'";
+                }
             }
         }
         private INavigationService GetNav()
@@ -125,17 +134,6 @@ namespace Event_Reservation_and_Venue_Management_System
         private void btnGenerateReport_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Generating dashboard summary report...", "Generate Report", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void NavigateToModule(string moduleName)
-        {
-            // Finds parent Form1 and switches to the target sidebar UserControl tab
-            Form parentForm = this.FindForm();
-            if (parentForm != null)
-            {
-                // Call public navigation handler on main Form if configured
-                // e.g., ((Form1)parentForm).SwitchToModule(moduleName);
-            }
         }
 
         // --- 5. Status Pill Custom Rendering ---
