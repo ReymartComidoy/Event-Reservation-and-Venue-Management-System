@@ -72,7 +72,7 @@
             btnClients.FlatStyle = FlatStyle.Flat;
             btnClients.Font = new Font("Segoe UI", 9.5F);
             btnClients.ForeColor = Color.White;
-            btnClients.Location = new Point(0, 294);
+            btnClients.Location = new Point(0, 321);
             btnClients.Name = "btnClients";
             btnClients.Size = new Size(200, 45);
             btnClients.TabIndex = 5;
@@ -86,7 +86,7 @@
             btnReservations.FlatStyle = FlatStyle.Flat;
             btnReservations.Font = new Font("Segoe UI", 9.5F);
             btnReservations.ForeColor = Color.White;
-            btnReservations.Location = new Point(0, 252);
+            btnReservations.Location = new Point(0, 219);
             btnReservations.Name = "btnReservations";
             btnReservations.Size = new Size(200, 45);
             btnReservations.TabIndex = 4;
@@ -100,7 +100,7 @@
             btnVenues.FlatStyle = FlatStyle.Flat;
             btnVenues.Font = new Font("Segoe UI", 9.5F);
             btnVenues.ForeColor = Color.White;
-            btnVenues.Location = new Point(0, 210);
+            btnVenues.Location = new Point(0, 270);
             btnVenues.Name = "btnVenues";
             btnVenues.Size = new Size(200, 45);
             btnVenues.TabIndex = 3;
@@ -128,7 +128,7 @@
             btnDashboard.FlatStyle = FlatStyle.Flat;
             btnDashboard.Font = new Font("Segoe UI", 9.5F);
             btnDashboard.ForeColor = Color.White;
-            btnDashboard.Location = new Point(0, 126);
+            btnDashboard.Location = new Point(0, 118);
             btnDashboard.Name = "btnDashboard";
             btnDashboard.Size = new Size(200, 45);
             btnDashboard.TabIndex = 1;
