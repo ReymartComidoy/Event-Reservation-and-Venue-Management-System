@@ -95,24 +95,31 @@ namespace Event_Reservation_and_Venue_Management_System
                     $"[Event Name] LIKE '%{searchKeyword}%' OR [Venue] LIKE '%{searchKeyword}%' OR [Status] LIKE '%{searchKeyword}%'";
             }
         }
-
+        private INavigationService GetNav()
+        {
+            // Uses injected service, or dynamically fetches Form1 if null
+            return _navigationService ?? (this.FindForm() as INavigationService);
+        }
         // --- 4. Quick Action Buttons ---
         private void btnNewReservation_Click(object sender, EventArgs e)
         {
             //NavigateToModule("RESERVATIONS");
-            _navigationService?.NavigateTo(ViewModule.Reservations);
+            //_navigationService?.NavigateTo(ViewModule.Reservations);
+            GetNav()?.NavigateTo(ViewModule.Reservations);
         }
 
         private void btnCheckAvailability_Click(object sender, EventArgs e)
         {
             //NavigateToModule("VENUES");
-            _navigationService?.NavigateTo(ViewModule.Venues);
+            //_navigationService?.NavigateTo(ViewModule.Venues);
+            GetNav()?.NavigateTo(ViewModule.Venues);
         }
 
         private void btnAddEvent_Click(object sender, EventArgs e)
         {
             //NavigateToModule("EVENTS");
-            _navigationService?.NavigateTo(ViewModule.Events);
+            //_navigationService?.NavigateTo(ViewModule.Events);
+            GetNav()?.NavigateTo(ViewModule.Events);
         }
 
         private void btnGenerateReport_Click(object sender, EventArgs e)
