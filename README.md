@@ -19,6 +19,17 @@ A desktop application built using **C#** and **Windows Forms (.NET 8.0)** design
 
 This project strictly adheres to clean architecture principles and the **Repository Pattern** to decouple the UI controls from business logic and data storage layers:
 
+Getting Started
+
+### Prerequisites
+* Visual Studio 2022 with the **.NET desktop development** workload installed.
+* **.NET 8.0 SDK** or higher.
+
+### Installation & Execution
+
+1. **Clone the Repository:**
+   ```bash
+   git clone [https://github.com/ReymartComidoy/Event-Reservation-and-Venue-Management-System.git](https://github.com/ReymartComidoy/Event-Reservation-and-Venue-Management-System.git)
 ```text
 Event-Reservation-and-Venue-Management-System/
 │
