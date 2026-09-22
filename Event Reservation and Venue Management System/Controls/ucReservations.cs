@@ -107,5 +107,10 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
                 ? string.Empty
                 : $"ClientName LIKE '%{query}%' OR EventName LIKE '%{query}%'";
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

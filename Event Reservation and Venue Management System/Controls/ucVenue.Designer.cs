@@ -46,20 +46,20 @@
             label3 = new Label();
             txtVenueName = new TextBox();
             label2 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgvVenues).BeginInit();
+            ((ISupportInitialize)dgvVenues).BeginInit();
             groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numCapacity).BeginInit();
+            ((ISupportInitialize)numCapacity).BeginInit();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.BackColor = SystemColors.Control;
-            label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Poppins", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.Black;
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
-            label1.Size = new Size(210, 30);
+            label1.Size = new Size(236, 37);
             label1.TabIndex = 2;
             label1.Text = "Venue Management";
             // 
@@ -73,12 +73,13 @@
             // btnAddNewVenue
             // 
             btnAddNewVenue.BackColor = Color.FromArgb(33, 37, 41);
+            btnAddNewVenue.Font = new Font("Poppins", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAddNewVenue.ForeColor = SystemColors.Control;
-            btnAddNewVenue.Location = new Point(433, 29);
+            btnAddNewVenue.Location = new Point(271, 29);
             btnAddNewVenue.Name = "btnAddNewVenue";
             btnAddNewVenue.Size = new Size(122, 29);
             btnAddNewVenue.TabIndex = 5;
-            btnAddNewVenue.Text = "+ Add New Venue";
+            btnAddNewVenue.Text = "+ Add New";
             btnAddNewVenue.UseVisualStyleBackColor = false;
             btnAddNewVenue.Click += btnAddVenue_Click;
             // 
@@ -156,7 +157,7 @@
             cmbStatus.FormattingEnabled = true;
             cmbStatus.Location = new Point(353, 102);
             cmbStatus.Name = "cmbStatus";
-            cmbStatus.Size = new Size(328, 23);
+            cmbStatus.Size = new Size(328, 29);
             cmbStatus.TabIndex = 9;
             // 
             // label6
@@ -249,10 +250,10 @@
             Name = "ucVenue";
             Size = new Size(764, 550);
             Load += ucVenue_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvVenues).EndInit();
+            ((ISupportInitialize)dgvVenues).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numCapacity).EndInit();
+            ((ISupportInitialize)numCapacity).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }

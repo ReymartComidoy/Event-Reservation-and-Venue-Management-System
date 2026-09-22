@@ -81,5 +81,10 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
             txtPhone.Clear();
             txtCompany.Clear();
         }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

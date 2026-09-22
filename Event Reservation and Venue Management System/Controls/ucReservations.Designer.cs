@@ -49,22 +49,23 @@
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgvReservations).BeginInit();
+            ((ISupportInitialize)dgvReservations).BeginInit();
             grpDetails.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numTotalAmount).BeginInit();
+            ((ISupportInitialize)numTotalAmount).BeginInit();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.BackColor = SystemColors.Control;
-            label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Poppins", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.Black;
             label1.Location = new Point(0, 0);
             label1.Name = "label1";
-            label1.Size = new Size(264, 30);
+            label1.Size = new Size(297, 37);
             label1.TabIndex = 3;
             label1.Text = "Reservation Management";
+            label1.Click += label1_Click;
             // 
             // txtSearch
             // 
@@ -85,12 +86,13 @@
             // btnAddNewReservation
             // 
             btnAddNewReservation.BackColor = Color.FromArgb(33, 37, 41);
+            btnAddNewReservation.Font = new Font("Poppins", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAddNewReservation.ForeColor = SystemColors.Control;
-            btnAddNewReservation.Location = new Point(433, 27);
+            btnAddNewReservation.Location = new Point(433, 31);
             btnAddNewReservation.Name = "btnAddNewReservation";
             btnAddNewReservation.Size = new Size(151, 29);
             btnAddNewReservation.TabIndex = 6;
-            btnAddNewReservation.Text = "+ Add New Reservation";
+            btnAddNewReservation.Text = "+ Add New";
             btnAddNewReservation.UseVisualStyleBackColor = false;
             btnAddNewReservation.Click += btnAddReservation_Click;
             // 
@@ -279,10 +281,10 @@
             Name = "ucReservations";
             Size = new Size(826, 555);
             Load += ucReservations_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvReservations).EndInit();
+            ((ISupportInitialize)dgvReservations).EndInit();
             grpDetails.ResumeLayout(false);
             grpDetails.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numTotalAmount).EndInit();
+            ((ISupportInitialize)numTotalAmount).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }

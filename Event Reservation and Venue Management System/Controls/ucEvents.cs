@@ -98,5 +98,10 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
         {
 
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

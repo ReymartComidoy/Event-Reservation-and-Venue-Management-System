@@ -49,7 +49,7 @@
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
+            ((ISupportInitialize)dgvClients).BeginInit();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -57,11 +57,11 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = SystemColors.Control;
-            label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Poppins", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.Black;
             label1.Location = new Point(0, 0);
             label1.Name = "label1";
-            label1.Size = new Size(206, 30);
+            label1.Size = new Size(231, 37);
             label1.TabIndex = 4;
             label1.Text = "Client Management";
             // 
@@ -72,6 +72,7 @@
             txtSearch.Size = new Size(262, 23);
             txtSearch.TabIndex = 5;
             txtSearch.Text = "Search Reservations...";
+            txtSearch.TextChanged += txtSearch_TextChanged;
             // 
             // cmbTypeFilter
             // 
@@ -84,12 +85,13 @@
             // btnAddNewClient
             // 
             btnAddNewClient.BackColor = Color.FromArgb(33, 37, 41);
+            btnAddNewClient.Font = new Font("Poppins", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAddNewClient.ForeColor = SystemColors.Control;
-            btnAddNewClient.Location = new Point(433, 29);
+            btnAddNewClient.Location = new Point(433, 31);
             btnAddNewClient.Name = "btnAddNewClient";
             btnAddNewClient.Size = new Size(123, 29);
             btnAddNewClient.TabIndex = 7;
-            btnAddNewClient.Text = "+ Add New Client";
+            btnAddNewClient.Text = "+ Add New";
             btnAddNewClient.UseVisualStyleBackColor = false;
             btnAddNewClient.Click += btnAddClient_Click;
             // 
@@ -274,7 +276,7 @@
             Name = "ucClients";
             Size = new Size(830, 586);
             Load += ucClients_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvClients).EndInit();
+            ((ISupportInitialize)dgvClients).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ResumeLayout(false);

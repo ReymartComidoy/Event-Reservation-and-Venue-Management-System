@@ -2,7 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Button = System.Windows.Forms.Button;
+using Color = System.Drawing.Color;
+using Font = System.Drawing.Font;
 using Event_Reservation_and_Venue_Management_System.Controls;
+using Event_Reservation_and_Venue_Management_System.Helpers;
 using Event_Reservation_and_Venue_Management_System.Services;
 
 namespace Event_Reservation_and_Venue_Management_System
@@ -14,6 +18,7 @@ namespace Event_Reservation_and_Venue_Management_System
         public Form1()
         {
             InitializeComponent();
+            UIHelper.ApplyPoppins(this);
             InitializeNavigation();
             NavigateTo(ViewModule.Dashboard); // Default view on startup
         }
@@ -44,6 +49,7 @@ namespace Event_Reservation_and_Venue_Management_System
             activeView.Dock = DockStyle.Fill;
             pnlMainContainer.Controls.Add(activeView);
             activeView.BringToFront();
+            UIHelper.ApplyPoppins(activeView);
 
             // 2. Update Sidebar Highlight Button State
             HighlightSidebarButton(module);
@@ -67,7 +73,7 @@ namespace Event_Reservation_and_Venue_Management_System
             {
                 activeButton.BackColor = Color.FromArgb(0, 122, 204); // Active Highlight Blue
                 activeButton.ForeColor = Color.White;
-                activeButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                activeButton.Font = new Font(activeButton.Font, FontStyle.Bold);
             }
         }
 
@@ -79,7 +85,7 @@ namespace Event_Reservation_and_Venue_Management_System
                 {
                     btn.BackColor = Color.FromArgb(33, 37, 41); // Default Sidebar Background
                     btn.ForeColor = Color.White;
-                    btn.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular);
+                    btn.Font = new Font(btn.Font, FontStyle.Regular);
                 }
             }
         }

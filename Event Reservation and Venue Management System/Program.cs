@@ -1,4 +1,4 @@
-namespace Event_Reservation_and_Venue_Management_System
+﻿namespace Event_Reservation_and_Venue_Management_System
 {
     internal static class Program
     {

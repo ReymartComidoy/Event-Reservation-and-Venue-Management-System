@@ -45,7 +45,7 @@
             label3 = new Label();
             txtEventName = new TextBox();
             label2 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgvEvents).BeginInit();
+            ((ISupportInitialize)dgvEvents).BeginInit();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -53,11 +53,11 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = SystemColors.Control;
-            label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Poppins", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.Black;
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
-            label1.Size = new Size(203, 30);
+            label1.Size = new Size(227, 37);
             label1.TabIndex = 1;
             label1.Text = "Event Management";
             // 
@@ -81,12 +81,13 @@
             // btnAddNewEvent
             // 
             btnAddNewEvent.BackColor = Color.FromArgb(33, 37, 41);
+            btnAddNewEvent.Font = new Font("Poppins", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAddNewEvent.ForeColor = SystemColors.Control;
-            btnAddNewEvent.Location = new Point(433, 29);
+            btnAddNewEvent.Location = new Point(398, 31);
             btnAddNewEvent.Name = "btnAddNewEvent";
             btnAddNewEvent.Size = new Size(122, 29);
             btnAddNewEvent.TabIndex = 4;
-            btnAddNewEvent.Text = "+ Add New Event";
+            btnAddNewEvent.Text = "+ Add New";
             btnAddNewEvent.UseVisualStyleBackColor = false;
             btnAddNewEvent.Click += btnAddEvent_Click;
             // 
@@ -243,7 +244,7 @@
             Name = "ucEvents";
             Size = new Size(786, 540);
             Click += ucEvents_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvEvents).EndInit();
+            ((ISupportInitialize)dgvEvents).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ResumeLayout(false);

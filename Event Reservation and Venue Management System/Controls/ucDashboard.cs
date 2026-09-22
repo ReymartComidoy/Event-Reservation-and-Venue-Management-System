@@ -67,7 +67,7 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
             lblVenuesAvailableCount.Text = $"{DataRepository.VenuesTable.Select("Status = 'Available'").Length}";
         }
 
-        
+
 
         #region Search Logic
 
@@ -169,5 +169,10 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
         }
 
         #endregion
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

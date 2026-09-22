@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucDashboard));
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(ucDashboard));
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             panel1 = new Panel();
             panel5 = new Panel();
             label12 = new Label();
@@ -65,17 +64,17 @@
             txtSearch = new TextBox();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            ((ISupportInitialize)pictureBox4).BeginInit();
             panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
+            ((ISupportInitialize)pictureBox3).BeginInit();
             panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((ISupportInitialize)pictureBox2).BeginInit();
             panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((ISupportInitialize)pictureBox1).BeginInit();
             panel6.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvDashboardEvents).BeginInit();
+            ((ISupportInitialize)dgvDashboardEvents).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -133,7 +132,6 @@
             pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox4.TabIndex = 4;
             pictureBox4.TabStop = false;
-            
             // 
             // label9
             // 
@@ -294,13 +292,14 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = Color.FromArgb(224, 224, 224);
-            label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Poppins", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.Black;
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
-            label1.Size = new Size(217, 30);
+            label1.Size = new Size(242, 37);
             label1.TabIndex = 0;
             label1.Text = "Dashboard Overview";
+            label1.Click += label1_Click;
             // 
             // panel6
             // 
@@ -311,7 +310,6 @@
             panel6.Name = "panel6";
             panel6.Size = new Size(820, 400);
             panel6.TabIndex = 1;
-            
             // 
             // groupBox2
             // 
@@ -330,6 +328,7 @@
             // btnNewReservation
             // 
             btnNewReservation.BackColor = Color.FromArgb(33, 37, 41);
+            btnNewReservation.Font = new Font("Poppins", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnNewReservation.ForeColor = Color.White;
             btnNewReservation.Location = new Point(6, 39);
             btnNewReservation.Name = "btnNewReservation";
@@ -342,6 +341,7 @@
             // btnCheckAvailability
             // 
             btnCheckAvailability.BackColor = Color.FromArgb(33, 37, 41);
+            btnCheckAvailability.Font = new Font("Poppins", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCheckAvailability.ForeColor = Color.White;
             btnCheckAvailability.Location = new Point(6, 88);
             btnCheckAvailability.Name = "btnCheckAvailability";
@@ -354,6 +354,7 @@
             // btnAddEvent
             // 
             btnAddEvent.BackColor = Color.FromArgb(33, 37, 41);
+            btnAddEvent.Font = new Font("Poppins", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAddEvent.ForeColor = Color.White;
             btnAddEvent.Location = new Point(6, 135);
             btnAddEvent.Name = "btnAddEvent";
@@ -366,6 +367,7 @@
             // btnGenerateReport
             // 
             btnGenerateReport.BackColor = Color.FromArgb(33, 37, 41);
+            btnGenerateReport.Font = new Font("Poppins", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnGenerateReport.ForeColor = Color.White;
             btnGenerateReport.Location = new Point(6, 181);
             btnGenerateReport.Name = "btnGenerateReport";
@@ -391,23 +393,23 @@
             // dgvDashboardEvents
             // 
             dgvDashboardEvents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvDashboardEvents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Control;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            dgvDashboardEvents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             dgvDashboardEvents.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvDashboardEvents.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dgvDashboardEvents.DefaultCellStyle = dataGridViewCellStyle6;
             dgvDashboardEvents.Dock = DockStyle.Bottom;
             dgvDashboardEvents.Location = new Point(3, 74);
             dgvDashboardEvents.Name = "dgvDashboardEvents";
@@ -417,10 +419,10 @@
             // 
             // btnSearch
             // 
-            btnSearch.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnSearch.Location = new Point(373, 28);
+            btnSearch.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnSearch.Location = new Point(373, 27);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(75, 21);
+            btnSearch.Size = new Size(75, 25);
             btnSearch.TabIndex = 1;
             btnSearch.Text = "Search";
             btnSearch.UseVisualStyleBackColor = true;
@@ -428,10 +430,10 @@
             // txtSearch
             // 
             txtSearch.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtSearch.Location = new Point(6, 28);
-            txtSearch.Multiline = true;
+            txtSearch.Location = new Point(6, 27);
+            txtSearch.Multiline = false;
             txtSearch.Name = "txtSearch";
-            txtSearch.Size = new Size(361, 21);
+            txtSearch.Size = new Size(361, 25);
             txtSearch.TabIndex = 0;
             // 
             // ucDashboard
@@ -442,26 +444,25 @@
             Controls.Add(panel1);
             Name = "ucDashboard";
             Size = new Size(820, 587);
-            
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel5.ResumeLayout(false);
             panel5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            ((ISupportInitialize)pictureBox4).EndInit();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
+            ((ISupportInitialize)pictureBox3).EndInit();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((ISupportInitialize)pictureBox2).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((ISupportInitialize)pictureBox1).EndInit();
             panel6.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvDashboardEvents).EndInit();
+            ((ISupportInitialize)dgvDashboardEvents).EndInit();
             ResumeLayout(false);
         }
 

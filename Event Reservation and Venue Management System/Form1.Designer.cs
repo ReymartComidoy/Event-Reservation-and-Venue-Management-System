@@ -29,7 +29,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(Form1));
             pnlSidebar = new Panel();
             pictureBox1 = new PictureBox();
             btnClients = new Button();
@@ -39,7 +39,7 @@
             btnDashboard = new Button();
             pnlMainContainer = new Panel();
             pnlSidebar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // pnlSidebar
@@ -71,7 +71,7 @@
             // 
             btnClients.FlatAppearance.BorderSize = 0;
             btnClients.FlatStyle = FlatStyle.Flat;
-            btnClients.Font = new Font("Segoe UI", 9.5F);
+            btnClients.Font = new Font("Poppins SemiBold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClients.ForeColor = Color.White;
             btnClients.Location = new Point(0, 321);
             btnClients.Name = "btnClients";
@@ -79,13 +79,12 @@
             btnClients.TabIndex = 5;
             btnClients.Text = "CLIENTS";
             btnClients.UseVisualStyleBackColor = true;
-            
             // 
             // btnReservations
             // 
             btnReservations.FlatAppearance.BorderSize = 0;
             btnReservations.FlatStyle = FlatStyle.Flat;
-            btnReservations.Font = new Font("Segoe UI", 9.5F);
+            btnReservations.Font = new Font("Poppins SemiBold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnReservations.ForeColor = Color.White;
             btnReservations.Location = new Point(0, 219);
             btnReservations.Name = "btnReservations";
@@ -93,13 +92,12 @@
             btnReservations.TabIndex = 4;
             btnReservations.Text = "RESERVATIONS";
             btnReservations.UseVisualStyleBackColor = true;
-            
             // 
             // btnVenues
             // 
             btnVenues.FlatAppearance.BorderSize = 0;
             btnVenues.FlatStyle = FlatStyle.Flat;
-            btnVenues.Font = new Font("Segoe UI", 9.5F);
+            btnVenues.Font = new Font("Poppins SemiBold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnVenues.ForeColor = Color.White;
             btnVenues.Location = new Point(0, 270);
             btnVenues.Name = "btnVenues";
@@ -107,13 +105,12 @@
             btnVenues.TabIndex = 3;
             btnVenues.Text = "VENUES";
             btnVenues.UseVisualStyleBackColor = true;
-            
             // 
             // btnEvents
             // 
             btnEvents.FlatAppearance.BorderSize = 0;
             btnEvents.FlatStyle = FlatStyle.Flat;
-            btnEvents.Font = new Font("Segoe UI", 9.5F);
+            btnEvents.Font = new Font("Poppins SemiBold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEvents.ForeColor = Color.White;
             btnEvents.Location = new Point(0, 168);
             btnEvents.Name = "btnEvents";
@@ -121,13 +118,12 @@
             btnEvents.TabIndex = 2;
             btnEvents.Text = "EVENTS";
             btnEvents.UseVisualStyleBackColor = true;
-            
             // 
             // btnDashboard
             // 
             btnDashboard.FlatAppearance.BorderSize = 0;
             btnDashboard.FlatStyle = FlatStyle.Flat;
-            btnDashboard.Font = new Font("Segoe UI", 9.5F);
+            btnDashboard.Font = new Font("Poppins SemiBold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnDashboard.ForeColor = Color.White;
             btnDashboard.Location = new Point(0, 118);
             btnDashboard.Name = "btnDashboard";
@@ -135,7 +131,6 @@
             btnDashboard.TabIndex = 1;
             btnDashboard.Text = "DASHBOARD";
             btnDashboard.UseVisualStyleBackColor = true;
-            
             // 
             // pnlMainContainer
             // 
@@ -154,10 +149,9 @@
             Controls.Add(pnlSidebar);
             Name = "Form1";
             ShowIcon = false;
-            Text = string.Empty;
             Load += Form1_Load;
             pnlSidebar.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 

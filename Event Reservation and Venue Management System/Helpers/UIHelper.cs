@@ -130,6 +130,21 @@ namespace Event_Reservation_and_Venue_Management_System.Helpers
             }
         }
 
+        /// <summary>
+        /// Applies the installed Poppins font to a form or control and all child controls.
+        /// </summary>
+        public static void ApplyPoppins(Control parentControl, float size = 10F)
+        {
+            if (parentControl == null) return;
+
+            parentControl.Font = new Font("Poppins", size, parentControl.Font.Style);
+
+            foreach (Control child in parentControl.Controls)
+            {
+                ApplyPoppins(child, size);
+            }
+        }
+
         private static GraphicsPath GetRoundedPath(Rectangle rect, int radius)
         {
             GraphicsPath path = new GraphicsPath();
