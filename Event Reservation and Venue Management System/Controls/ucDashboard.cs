@@ -10,7 +10,7 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
     public partial class ucDashboard : UserControl
     {
         private readonly INavigationService? _navigationService;
-        private DataTable _eventsDataTable = new DataTable();
+        private DataTable _eventsDataTable = DataRepository.EventsTable;
 
         // Parameterless constructor for WinForms Designer
         public ucDashboard()
@@ -57,7 +57,8 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
         public void LoadDashboardData()
         {
             // Bind shared Events table
-            dgvDashboardEvents.DataSource = DataRepository.EventsTable;
+            _eventsDataTable = DataRepository.EventsTable;
+            dgvDashboardEvents.DataSource = _eventsDataTable;
 
             // Dynamically calculate counts across all interconnected sections
             lblActiveEventsCount.Text = DataRepository.EventsTable.Select("Status = 'Upcoming' OR Status = 'Active'").Length.ToString();
@@ -91,7 +92,7 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
             }
             else
             {
-                _eventsDataTable.DefaultView.RowFilter = $"[Event Name] LIKE '%{query}%' OR [Venue] LIKE '%{query}%'";
+                _eventsDataTable.DefaultView.RowFilter = $"[EventName] LIKE '%{query}%' OR [Venue] LIKE '%{query}%'";
             }
         }
 

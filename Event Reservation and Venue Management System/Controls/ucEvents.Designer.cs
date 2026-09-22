@@ -63,7 +63,7 @@
             // 
             // txtSearch
             // 
-            txtSearch.Location = new Point(16, 33);
+            txtSearch.Location = new Point(3, 33);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(262, 23);
             txtSearch.TabIndex = 2;
@@ -73,7 +73,7 @@
             // 
             cmbVenueFilter.FormattingEnabled = true;
             cmbVenueFilter.Items.AddRange(new object[] { "All Venues" });
-            cmbVenueFilter.Location = new Point(284, 33);
+            cmbVenueFilter.Location = new Point(271, 33);
             cmbVenueFilter.Name = "cmbVenueFilter";
             cmbVenueFilter.Size = new Size(121, 23);
             cmbVenueFilter.TabIndex = 3;
@@ -82,7 +82,7 @@
             // 
             btnAddNewEvent.BackColor = Color.FromArgb(33, 37, 41);
             btnAddNewEvent.ForeColor = SystemColors.Control;
-            btnAddNewEvent.Location = new Point(411, 27);
+            btnAddNewEvent.Location = new Point(433, 29);
             btnAddNewEvent.Name = "btnAddNewEvent";
             btnAddNewEvent.Size = new Size(122, 29);
             btnAddNewEvent.TabIndex = 4;
@@ -92,11 +92,14 @@
             // 
             // dgvEvents
             // 
+            dgvEvents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvEvents.BackgroundColor = Color.Gray;
             dgvEvents.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEvents.Location = new Point(16, 62);
+            dgvEvents.Location = new Point(3, 62);
             dgvEvents.Name = "dgvEvents";
-            dgvEvents.Size = new Size(744, 245);
+            dgvEvents.Size = new Size(827, 346);
             dgvEvents.TabIndex = 5;
+            dgvEvents.CellContentClick += dgvEvents_CellContentClick;
             // 
             // groupBox1
             // 
@@ -232,14 +235,13 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(groupBox1);
             Controls.Add(dgvEvents);
             Controls.Add(btnAddNewEvent);
             Controls.Add(cmbVenueFilter);
             Controls.Add(txtSearch);
             Controls.Add(label1);
             Name = "ucEvents";
-            Size = new Size(783, 541);
+            Size = new Size(786, 540);
             Click += ucEvents_Load;
             ((System.ComponentModel.ISupportInitialize)dgvEvents).EndInit();
             groupBox1.ResumeLayout(false);

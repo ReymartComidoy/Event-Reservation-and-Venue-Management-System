@@ -96,10 +96,12 @@
             // 
             // dgvReservations
             // 
+            dgvReservations.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvReservations.BackgroundColor = Color.Gray;
             dgvReservations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvReservations.Location = new Point(3, 62);
             dgvReservations.Name = "dgvReservations";
-            dgvReservations.Size = new Size(743, 223);
+            dgvReservations.Size = new Size(827, 346);
             dgvReservations.TabIndex = 7;
             // 
             // grpDetails
@@ -132,7 +134,7 @@
             cmbVenue.FormattingEnabled = true;
             cmbVenue.Location = new Point(465, 107);
             cmbVenue.Name = "cmbVenue";
-            cmbVenue.Size = new Size(217, 25);
+            cmbVenue.Size = new Size(217, 23);
             cmbVenue.TabIndex = 17;
             // 
             // numTotalAmount
@@ -194,7 +196,7 @@
             cmbStatus.FormattingEnabled = true;
             cmbStatus.Location = new Point(465, 71);
             cmbStatus.Name = "cmbStatus";
-            cmbStatus.Size = new Size(217, 25);
+            cmbStatus.Size = new Size(217, 23);
             cmbStatus.TabIndex = 8;
             // 
             // label6
@@ -227,7 +229,7 @@
             cmbEvent.FormattingEnabled = true;
             cmbEvent.Location = new Point(140, 68);
             cmbEvent.Name = "cmbEvent";
-            cmbEvent.Size = new Size(199, 25);
+            cmbEvent.Size = new Size(199, 23);
             cmbEvent.TabIndex = 4;
             // 
             // cmbClient
@@ -235,7 +237,7 @@
             cmbClient.FormattingEnabled = true;
             cmbClient.Location = new Point(140, 34);
             cmbClient.Name = "cmbClient";
-            cmbClient.Size = new Size(199, 25);
+            cmbClient.Size = new Size(199, 23);
             cmbClient.TabIndex = 3;
             // 
             // label4
@@ -269,7 +271,6 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(grpDetails);
             Controls.Add(dgvReservations);
             Controls.Add(btnAddNewReservation);
             Controls.Add(cmbStatusFilter);

@@ -19,7 +19,6 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
             btnSave.Click += btnSave_Click;
             btnDelete.Click += btnDelete_Click;
             btnCancel.Click += btnCancel_Click;
-            btnAddNewClient.Click += btnAddClient_Click;
             dgvClients.SelectionChanged += dgvClients_SelectionChanged;
         }
 
@@ -59,9 +58,12 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 
         private void btnAddClient_Click(object? sender, EventArgs e)
         {
-            string newId = $"CLT-{1000 + DataRepository.ClientsTable.Rows.Count + 1}";
-            DataRepository.ClientsTable.Rows.Add(newId, txtFullName.Text, txtEmail.Text, txtPhone.Text, txtCompany.Text, cmbClientType.SelectedItem?.ToString(), "Active");
-            MessageBox.Show("New client added!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using ClientDetailsForm clientDetailsForm = new ClientDetailsForm();
+            if (clientDetailsForm.ShowDialog(FindForm()) == DialogResult.OK)
+            {
+                dgvClients.DataSource = null;
+                dgvClients.DataSource = DataRepository.ClientsTable;
+            }
         }
 
         private void btnDelete_Click(object? sender, EventArgs e)

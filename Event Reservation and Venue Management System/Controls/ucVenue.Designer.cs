@@ -65,7 +65,7 @@
             // 
             // txtSearch
             // 
-            txtSearch.Location = new Point(12, 33);
+            txtSearch.Location = new Point(3, 33);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(262, 23);
             txtSearch.TabIndex = 3;
@@ -74,7 +74,7 @@
             // 
             btnAddNewVenue.BackColor = Color.FromArgb(33, 37, 41);
             btnAddNewVenue.ForeColor = SystemColors.Control;
-            btnAddNewVenue.Location = new Point(280, 29);
+            btnAddNewVenue.Location = new Point(433, 29);
             btnAddNewVenue.Name = "btnAddNewVenue";
             btnAddNewVenue.Size = new Size(122, 29);
             btnAddNewVenue.TabIndex = 5;
@@ -84,10 +84,12 @@
             // 
             // dgvVenues
             // 
+            dgvVenues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvVenues.BackgroundColor = Color.Gray;
             dgvVenues.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvVenues.Location = new Point(12, 62);
+            dgvVenues.Location = new Point(3, 62);
             dgvVenues.Name = "dgvVenues";
-            dgvVenues.Size = new Size(699, 246);
+            dgvVenues.Size = new Size(827, 346);
             dgvVenues.TabIndex = 6;
             // 
             // groupBox1
@@ -154,7 +156,7 @@
             cmbStatus.FormattingEnabled = true;
             cmbStatus.Location = new Point(353, 102);
             cmbStatus.Name = "cmbStatus";
-            cmbStatus.Size = new Size(328, 29);
+            cmbStatus.Size = new Size(328, 23);
             cmbStatus.TabIndex = 9;
             // 
             // label6
@@ -240,7 +242,6 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(groupBox1);
             Controls.Add(dgvVenues);
             Controls.Add(btnAddNewVenue);
             Controls.Add(txtSearch);

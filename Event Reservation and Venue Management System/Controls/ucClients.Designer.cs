@@ -95,10 +95,12 @@
             // 
             // dgvClients
             // 
+            dgvClients.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvClients.BackgroundColor = Color.Gray;
             dgvClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvClients.Location = new Point(3, 62);
             dgvClients.Name = "dgvClients";
-            dgvClients.Size = new Size(727, 248);
+            dgvClients.Size = new Size(827, 346);
             dgvClients.TabIndex = 8;
             // 
             // groupBox1
@@ -167,7 +169,7 @@
             cmbStatus.FormattingEnabled = true;
             cmbStatus.Location = new Point(475, 114);
             cmbStatus.Name = "cmbStatus";
-            cmbStatus.Size = new Size(217, 25);
+            cmbStatus.Size = new Size(217, 23);
             cmbStatus.TabIndex = 11;
             // 
             // cmbClientType
@@ -175,7 +177,7 @@
             cmbClientType.FormattingEnabled = true;
             cmbClientType.Location = new Point(475, 79);
             cmbClientType.Name = "cmbClientType";
-            cmbClientType.Size = new Size(217, 25);
+            cmbClientType.Size = new Size(217, 23);
             cmbClientType.TabIndex = 10;
             // 
             // txtPhone
@@ -264,7 +266,6 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(groupBox1);
             Controls.Add(dgvClients);
             Controls.Add(btnAddNewClient);
             Controls.Add(cmbTypeFilter);

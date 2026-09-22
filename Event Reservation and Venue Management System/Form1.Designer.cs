@@ -153,7 +153,8 @@
             Controls.Add(pnlMainContainer);
             Controls.Add(pnlSidebar);
             Name = "Form1";
-            Text = "Form1";
+            ShowIcon = false;
+            Text = string.Empty;
             Load += Form1_Load;
             pnlSidebar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

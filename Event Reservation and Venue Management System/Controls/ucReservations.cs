@@ -19,7 +19,6 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
             btnSave.Click += btnSave_Click;
             btnDelete.Click += btnDelete_Click;
             btnCancel.Click += btnCancel_Click;
-            btnAddNewReservation.Click += btnAddReservation_Click;
             dgvReservations.SelectionChanged += dgvReservations_SelectionChanged;
             txtSearch.TextChanged += txtSearchReservations_TextChanged;
         }
@@ -80,17 +79,12 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 
         private void btnAddReservation_Click(object? sender, EventArgs e)
         {
-            string newId = $"RES-{2000 + DataRepository.ReservationsTable.Rows.Count + 1}";
-            DataRepository.ReservationsTable.Rows.Add(
-                newId,
-                cmbClient.SelectedItem?.ToString(),
-                cmbEvent.SelectedItem?.ToString(),
-                cmbVenue.SelectedItem?.ToString(),
-                dtpReservationDate.Value.ToString("yyyy-MM-dd"),
-                numTotalAmount.Value,
-                "Confirmed"
-            );
-            MessageBox.Show("New reservation recorded!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using ReservationDetailsForm reservationDetailsForm = new ReservationDetailsForm();
+            if (reservationDetailsForm.ShowDialog(FindForm()) == DialogResult.OK)
+            {
+                dgvReservations.DataSource = null;
+                dgvReservations.DataSource = DataRepository.ReservationsTable;
+            }
         }
 
         private void btnDelete_Click(object? sender, EventArgs e)

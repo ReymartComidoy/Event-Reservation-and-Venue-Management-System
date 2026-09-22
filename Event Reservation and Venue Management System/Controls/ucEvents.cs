@@ -50,27 +50,11 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 
         private void btnAddEvent_Click(object sender, EventArgs e)
         {
-            // Calculate highest existing ID to prevent duplicate IDs
-            int maxId = 100;
-            foreach (DataRow row in DataRepository.EventsTable.Rows)
+            using EventDetailsForm eventDetailsForm = new EventDetailsForm();
+            if (eventDetailsForm.ShowDialog(FindForm()) == DialogResult.OK)
             {
-                if (row["EventID"] != DBNull.Value && Convert.ToInt32(row["EventID"]) > maxId)
-                {
-                    maxId = Convert.ToInt32(row["EventID"]);
-                }
+                RefreshGrid();
             }
-
-            DataRepository.EventsTable.Rows.Add(
-                maxId + 1,
-                txtEventName.Text,
-                cmbVenue.SelectedItem?.ToString(),
-                dtpEventDate.Value.ToString("yyyy-MM-dd"),
-                "09:00 AM",
-                "Upcoming",
-                0
-            );
-
-            MessageBox.Show("New Event created!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -108,6 +92,11 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
             DataRepository.EventsTable.DefaultView.RowFilter = string.IsNullOrEmpty(query)
                 ? string.Empty
                 : $"EventName LIKE '%{query}%' OR Venue LIKE '%{query}%'";
+        }
+
+        private void dgvEvents_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

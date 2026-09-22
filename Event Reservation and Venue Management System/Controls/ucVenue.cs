@@ -19,7 +19,6 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
             btnSave.Click += btnSave_Click;
             btnDelete.Click += btnDelete_Click;
             btnCancel.Click += btnCancel_Click;
-            btnAddNewVenue.Click += btnAddVenue_Click;
             dgvVenues.SelectionChanged += dgvVenues_SelectionChanged;
         }
 
@@ -55,8 +54,12 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 
         private void btnAddVenue_Click(object? sender, EventArgs e)
         {
-            DataRepository.VenuesTable.Rows.Add(txtVenueName.Text, (int)numCapacity.Value, "Main Complex", decimal.TryParse(txtHourlyRate.Text, out decimal r) ? r : 0, "Available");
-            MessageBox.Show("New venue added!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using VenueDetailsForm venueDetailsForm = new VenueDetailsForm();
+            if (venueDetailsForm.ShowDialog(FindForm()) == DialogResult.OK)
+            {
+                dgvVenues.DataSource = null;
+                dgvVenues.DataSource = DataRepository.VenuesTable;
+            }
         }
 
         private void btnDelete_Click(object? sender, EventArgs e)
