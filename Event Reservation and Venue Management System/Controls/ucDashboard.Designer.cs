@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             ComponentResourceManager resources = new ComponentResourceManager(typeof(ucDashboard));
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             panel1 = new Panel();
             panel5 = new Panel();
             label12 = new Label();
@@ -79,7 +79,8 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.FromArgb(224, 224, 224);
+            panel1.BackColor = Color.LightSlateGray;
+            panel1.BackgroundImage = (Image)resources.GetObject("panel1.BackgroundImage");
             panel1.Controls.Add(panel5);
             panel1.Controls.Add(panel4);
             panel1.Controls.Add(panel3);
@@ -93,7 +94,7 @@
             // 
             // panel5
             // 
-            panel5.BackColor = Color.White;
+            panel5.BackColor = Color.LightSteelBlue;
             panel5.Controls.Add(label12);
             panel5.Controls.Add(lblVenuesAvailableCount);
             panel5.Controls.Add(pictureBox4);
@@ -145,7 +146,7 @@
             // 
             // panel4
             // 
-            panel4.BackColor = Color.White;
+            panel4.BackColor = Color.LightSteelBlue;
             panel4.Controls.Add(lblTotalBookingsTodayCount);
             panel4.Controls.Add(pictureBox3);
             panel4.Controls.Add(label8);
@@ -186,7 +187,7 @@
             // 
             // panel3
             // 
-            panel3.BackColor = Color.White;
+            panel3.BackColor = Color.LightSteelBlue;
             panel3.Controls.Add(label7);
             panel3.Controls.Add(lblUpcomingReservationsCount);
             panel3.Controls.Add(label5);
@@ -210,7 +211,7 @@
             // 
             lblUpcomingReservationsCount.AutoSize = true;
             lblUpcomingReservationsCount.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUpcomingReservationsCount.Location = new Point(65, 43);
+            lblUpcomingReservationsCount.Location = new Point(94, 43);
             lblUpcomingReservationsCount.Name = "lblUpcomingReservationsCount";
             lblUpcomingReservationsCount.Size = new Size(46, 54);
             lblUpcomingReservationsCount.TabIndex = 2;
@@ -229,16 +230,16 @@
             // pictureBox2
             // 
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(-10, 22);
+            pictureBox2.Location = new Point(13, 32);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(88, 95);
+            pictureBox2.Size = new Size(75, 72);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 2;
             pictureBox2.TabStop = false;
             // 
             // panel2
             // 
-            panel2.BackColor = Color.White;
+            panel2.BackColor = Color.LightSteelBlue;
             panel2.Controls.Add(label4);
             panel2.Controls.Add(lblActiveEventsCount);
             panel2.Controls.Add(label2);
@@ -291,18 +292,21 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.BackColor = Color.FromArgb(224, 224, 224);
-            label1.Font = new Font("Poppins", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.Black;
+            label1.BackColor = Color.Transparent;
+            label1.BorderStyle = BorderStyle.FixedSingle;
+            label1.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.WhiteSmoke;
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
-            label1.Size = new Size(242, 37);
+            label1.Size = new Size(232, 27);
             label1.TabIndex = 0;
             label1.Text = "Dashboard Overview";
             label1.Click += label1_Click;
             // 
             // panel6
             // 
+            panel6.BackColor = SystemColors.Control;
+            panel6.BackgroundImage = Properties.Resources.download;
             panel6.Controls.Add(groupBox2);
             panel6.Controls.Add(groupBox1);
             panel6.Dock = DockStyle.Fill;
@@ -328,7 +332,7 @@
             // btnNewReservation
             // 
             btnNewReservation.BackColor = Color.FromArgb(33, 37, 41);
-            btnNewReservation.Font = new Font("Poppins", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNewReservation.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnNewReservation.ForeColor = Color.White;
             btnNewReservation.Location = new Point(6, 39);
             btnNewReservation.Name = "btnNewReservation";
@@ -341,7 +345,7 @@
             // btnCheckAvailability
             // 
             btnCheckAvailability.BackColor = Color.FromArgb(33, 37, 41);
-            btnCheckAvailability.Font = new Font("Poppins", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCheckAvailability.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCheckAvailability.ForeColor = Color.White;
             btnCheckAvailability.Location = new Point(6, 88);
             btnCheckAvailability.Name = "btnCheckAvailability";
@@ -354,7 +358,7 @@
             // btnAddEvent
             // 
             btnAddEvent.BackColor = Color.FromArgb(33, 37, 41);
-            btnAddEvent.Font = new Font("Poppins", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAddEvent.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAddEvent.ForeColor = Color.White;
             btnAddEvent.Location = new Point(6, 135);
             btnAddEvent.Name = "btnAddEvent";
@@ -367,7 +371,7 @@
             // btnGenerateReport
             // 
             btnGenerateReport.BackColor = Color.FromArgb(33, 37, 41);
-            btnGenerateReport.Font = new Font("Poppins", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnGenerateReport.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnGenerateReport.ForeColor = Color.White;
             btnGenerateReport.Location = new Point(6, 181);
             btnGenerateReport.Name = "btnGenerateReport";
@@ -393,23 +397,23 @@
             // dgvDashboardEvents
             // 
             dgvDashboardEvents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = SystemColors.Control;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dgvDashboardEvents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvDashboardEvents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvDashboardEvents.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = SystemColors.Window;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
-            dgvDashboardEvents.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvDashboardEvents.DefaultCellStyle = dataGridViewCellStyle2;
             dgvDashboardEvents.Dock = DockStyle.Bottom;
             dgvDashboardEvents.Location = new Point(3, 74);
             dgvDashboardEvents.Name = "dgvDashboardEvents";
@@ -431,7 +435,6 @@
             // 
             txtSearch.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtSearch.Location = new Point(6, 27);
-            txtSearch.Multiline = false;
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(361, 25);
             txtSearch.TabIndex = 0;
@@ -440,6 +443,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = Properties.Resources.BUREAUX_AUSTERLITZ_PARIS_234_ARCHITECTES___Office_Snapshots;
             Controls.Add(panel6);
             Controls.Add(panel1);
             Name = "ucDashboard";

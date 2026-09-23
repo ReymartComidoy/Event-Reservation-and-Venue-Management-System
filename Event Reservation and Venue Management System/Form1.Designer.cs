@@ -44,14 +44,16 @@
             // 
             // pnlSidebar
             // 
+            pnlSidebar.Anchor = AnchorStyles.None;
             pnlSidebar.BackColor = Color.FromArgb(33, 37, 41);
+            pnlSidebar.BackgroundImage = (Image)resources.GetObject("pnlSidebar.BackgroundImage");
+            pnlSidebar.BackgroundImageLayout = ImageLayout.Center;
             pnlSidebar.Controls.Add(pictureBox1);
             pnlSidebar.Controls.Add(btnClients);
             pnlSidebar.Controls.Add(btnReservations);
             pnlSidebar.Controls.Add(btnVenues);
             pnlSidebar.Controls.Add(btnEvents);
             pnlSidebar.Controls.Add(btnDashboard);
-            pnlSidebar.Dock = DockStyle.Left;
             pnlSidebar.Location = new Point(0, 0);
             pnlSidebar.Name = "pnlSidebar";
             pnlSidebar.Size = new Size(200, 526);
@@ -59,82 +61,94 @@
             // 
             // pictureBox1
             // 
+            pictureBox1.Anchor = AnchorStyles.None;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(12, 0);
+            pictureBox1.Location = new Point(12, 26);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(167, 112);
+            pictureBox1.Size = new Size(167, 66);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
             // btnClients
             // 
+            btnClients.Anchor = AnchorStyles.None;
+            btnClients.BackColor = Color.FromArgb(33, 37, 41);
             btnClients.FlatAppearance.BorderSize = 0;
             btnClients.FlatStyle = FlatStyle.Flat;
-            btnClients.Font = new Font("Poppins SemiBold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnClients.Font = new Font("Palatino Linotype", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClients.ForeColor = Color.White;
-            btnClients.Location = new Point(0, 321);
+            btnClients.Location = new Point(0, 343);
             btnClients.Name = "btnClients";
-            btnClients.Size = new Size(200, 45);
+            btnClients.Size = new Size(200, 30);
             btnClients.TabIndex = 5;
             btnClients.Text = "CLIENTS";
-            btnClients.UseVisualStyleBackColor = true;
+            btnClients.UseVisualStyleBackColor = false;
             // 
             // btnReservations
             // 
+            btnReservations.Anchor = AnchorStyles.None;
+            btnReservations.BackColor = Color.FromArgb(33, 37, 41);
             btnReservations.FlatAppearance.BorderSize = 0;
             btnReservations.FlatStyle = FlatStyle.Flat;
-            btnReservations.Font = new Font("Poppins SemiBold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnReservations.Font = new Font("Palatino Linotype", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnReservations.ForeColor = Color.White;
-            btnReservations.Location = new Point(0, 219);
+            btnReservations.Location = new Point(0, 232);
             btnReservations.Name = "btnReservations";
-            btnReservations.Size = new Size(200, 45);
+            btnReservations.Size = new Size(200, 32);
             btnReservations.TabIndex = 4;
             btnReservations.Text = "RESERVATIONS";
-            btnReservations.UseVisualStyleBackColor = true;
+            btnReservations.UseVisualStyleBackColor = false;
             // 
             // btnVenues
             // 
+            btnVenues.Anchor = AnchorStyles.None;
+            btnVenues.BackColor = Color.FromArgb(33, 37, 41);
             btnVenues.FlatAppearance.BorderSize = 0;
             btnVenues.FlatStyle = FlatStyle.Flat;
-            btnVenues.Font = new Font("Poppins SemiBold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnVenues.Font = new Font("Palatino Linotype", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnVenues.ForeColor = Color.White;
-            btnVenues.Location = new Point(0, 270);
+            btnVenues.Location = new Point(0, 289);
             btnVenues.Name = "btnVenues";
-            btnVenues.Size = new Size(200, 45);
+            btnVenues.Size = new Size(200, 32);
             btnVenues.TabIndex = 3;
             btnVenues.Text = "VENUES";
-            btnVenues.UseVisualStyleBackColor = true;
+            btnVenues.UseVisualStyleBackColor = false;
             // 
             // btnEvents
             // 
+            btnEvents.Anchor = AnchorStyles.None;
+            btnEvents.BackColor = Color.FromArgb(33, 37, 41);
             btnEvents.FlatAppearance.BorderSize = 0;
             btnEvents.FlatStyle = FlatStyle.Flat;
-            btnEvents.Font = new Font("Poppins SemiBold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEvents.Font = new Font("Palatino Linotype", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEvents.ForeColor = Color.White;
-            btnEvents.Location = new Point(0, 168);
+            btnEvents.Location = new Point(0, 185);
             btnEvents.Name = "btnEvents";
-            btnEvents.Size = new Size(200, 45);
+            btnEvents.Size = new Size(200, 28);
             btnEvents.TabIndex = 2;
             btnEvents.Text = "EVENTS";
-            btnEvents.UseVisualStyleBackColor = true;
+            btnEvents.UseVisualStyleBackColor = false;
+            btnEvents.Click += btnEvents_Click;
             // 
             // btnDashboard
             // 
+            btnDashboard.Anchor = AnchorStyles.None;
+            btnDashboard.BackColor = Color.FromArgb(33, 37, 41);
             btnDashboard.FlatAppearance.BorderSize = 0;
             btnDashboard.FlatStyle = FlatStyle.Flat;
-            btnDashboard.Font = new Font("Poppins SemiBold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnDashboard.Font = new Font("Palatino Linotype", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnDashboard.ForeColor = Color.White;
-            btnDashboard.Location = new Point(0, 118);
+            btnDashboard.Location = new Point(-6, 134);
             btnDashboard.Name = "btnDashboard";
-            btnDashboard.Size = new Size(200, 45);
+            btnDashboard.Size = new Size(206, 28);
             btnDashboard.TabIndex = 1;
             btnDashboard.Text = "DASHBOARD";
-            btnDashboard.UseVisualStyleBackColor = true;
+            btnDashboard.UseVisualStyleBackColor = false;
             // 
             // pnlMainContainer
             // 
-            pnlMainContainer.Dock = DockStyle.Fill;
+            pnlMainContainer.Anchor = AnchorStyles.None;
             pnlMainContainer.Location = new Point(200, 0);
             pnlMainContainer.Name = "pnlMainContainer";
             pnlMainContainer.Size = new Size(821, 526);

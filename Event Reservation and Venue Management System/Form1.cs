@@ -91,5 +91,10 @@ namespace Event_Reservation_and_Venue_Management_System
         }
 
         private void Form1_Load(object sender, EventArgs e) { }
+
+        private void btnEvents_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
