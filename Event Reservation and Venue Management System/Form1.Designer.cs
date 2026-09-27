@@ -46,7 +46,6 @@
             // 
             pnlSidebar.Anchor = AnchorStyles.None;
             pnlSidebar.BackColor = Color.FromArgb(33, 37, 41);
-            pnlSidebar.BackgroundImage = (Image)resources.GetObject("pnlSidebar.BackgroundImage");
             pnlSidebar.BackgroundImageLayout = ImageLayout.Center;
             pnlSidebar.Controls.Add(pictureBox1);
             pnlSidebar.Controls.Add(btnClients);
