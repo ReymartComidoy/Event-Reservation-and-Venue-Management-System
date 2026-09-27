@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Windows.Forms;
 using User = Event_Reservation_and_Venue_Management_System.Models.User;
+using Event_Reservation_and_Venue_Management_System.Services;
+using Event_Reservation_and_Venue_Management_System.DbContext;
+using Microsoft.Data.SqlClient;
 
 namespace Event_Reservation_and_Venue_Management_System.Controls
 {
     public partial class MakeReservationView : UserControl, IClientUserContextAware
     {
         private User? _currentUser;
+        private readonly VenueService _venueService = new();
+        private readonly ReservationService _reservationService = new();
+        private System.Data.DataTable _venues = new();
 
         public MakeReservationView()
         {
@@ -37,9 +43,19 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
         public void LoadVenuesList()
         {
             cmbVenue.Items.Clear();
-            // TODO: Fetch active venues from DB
-            // var venues = _venueRepository.GetActiveVenues();
-            // foreach(var v in venues) cmbVenue.Items.Add(v.Name);
+            try
+            {
+                _venues = _venueService.GetAll();
+                foreach (System.Data.DataRow row in _venues.Rows)
+                {
+                    if (string.Equals(row["Status"].ToString(), "Available", StringComparison.OrdinalIgnoreCase))
+                        cmbVenue.Items.Add(row["VenueName"].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to load venues.\n\n{ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             if (cmbVenue.Items.Count > 0)
                 cmbVenue.SelectedIndex = 0;
@@ -53,8 +69,10 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
                 return;
             }
 
-            // TODO: Fetch base rate from database model based on cmbVenue.SelectedItem
-            decimal total = 0.00m;
+            System.Data.DataRow? venue = _venues.Rows.Cast<System.Data.DataRow>()
+                .FirstOrDefault(row => string.Equals(row["VenueName"].ToString(), cmbVenue.SelectedItem?.ToString(), StringComparison.OrdinalIgnoreCase));
+            decimal hourlyRate = venue == null ? 0 : Convert.ToDecimal(venue["PricePerHour"]);
+            decimal total = hourlyRate;
             lblTotalFeeVal.Text = $"₱ {total:N2}";
         }
 
@@ -83,7 +101,26 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
                 return;
             }
 
-            // TODO: Execute DB Insert / Service operation to save reservation
+            if (_currentUser == null)
+                return;
+
+            System.Data.DataRow? venue = _venues.Rows.Cast<System.Data.DataRow>()
+                .FirstOrDefault(row => string.Equals(row["VenueName"].ToString(), cmbVenue.SelectedItem?.ToString(), StringComparison.OrdinalIgnoreCase));
+            if (venue == null)
+                return;
+
+            try
+            {
+                _reservationService.Save(_currentUser.Id, Convert.ToInt32(venue["Id"]), txtEventTitle.Text.Trim(),
+                    dtpReservationDate.Value, cmbTimeSlot.SelectedItem?.ToString() ?? "", (int)numGuestCount.Value,
+                    txtSpecialRequests.Text.Trim(), Convert.ToDecimal(venue["PricePerHour"]));
+                MessageBox.Show("Reservation submitted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                btnClear_Click(sender, e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to submit reservation.\n\n{ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnClear_Click(object sender, EventArgs e)

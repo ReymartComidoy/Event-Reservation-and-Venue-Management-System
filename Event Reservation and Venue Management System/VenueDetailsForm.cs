@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using Event_Reservation_and_Venue_Management_System.Services;
 
@@ -13,6 +14,10 @@ namespace Event_Reservation_and_Venue_Management_System
         private readonly TextBox txtLocation = new TextBox();
         private readonly TextBox txtHourlyRate = new TextBox();
         private readonly ComboBox cmbStatus = new ComboBox();
+        private readonly ComboBox cmbVenueType = new ComboBox();
+        private readonly TextBox txtImagePath = new TextBox();
+        private readonly Button btnChooseImage = new Button();
+        private readonly VenueService _venueService = new();
 
         public VenueDetailsForm()
         {
@@ -27,14 +32,14 @@ namespace Event_Reservation_and_Venue_Management_System
             MaximizeBox = false;
             MinimizeBox = false;
             ShowInTaskbar = false;
-            ClientSize = new Size(744, 238);
+            ClientSize = new Size(744, 320);
 
             var groupBox = new GroupBox
             {
                 Text = "Venue Details",
                 Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold),
                 Location = new Point(10, 10),
-                Size = new Size(734, 218)
+                Size = new Size(734, 300)
             };
 
             AddField(groupBox, "Venue Name:", txtVenueName, 10, 34, 249, 23);
@@ -42,15 +47,26 @@ namespace Event_Reservation_and_Venue_Management_System
             AddField(groupBox, "Location:", txtLocation, 10, 114, 249, 23);
             AddField(groupBox, "Price Per Hour:", txtHourlyRate, 357, 34, 214, 23);
             AddField(groupBox, "Status:", cmbStatus, 357, 74, 214, 23);
+            AddField(groupBox, "Venue Type:", cmbVenueType, 10, 154, 249, 23);
+            AddField(groupBox, "Image:", txtImagePath, 357, 114, 150, 23);
 
             numCapacity.Maximum = 1000000;
             ConfigureCombo(cmbStatus);
             cmbStatus.Items.AddRange(new object[] { "Available", "Unavailable", "Maintenance" });
             cmbStatus.SelectedItem = "Available";
+            ConfigureCombo(cmbVenueType);
+            cmbVenueType.Items.AddRange(new object[] { "Golden Palace", "Big 8", "Grand palm" });
+            cmbVenueType.SelectedIndex = 0;
 
-            var btnSave = CreateButton("Save", 92, 166);
-            var btnCancel = CreateButton("Cancel", 219, 166);
-            var btnDelete = CreateButton("Delete", 346, 166);
+            btnChooseImage.Text = "Browse";
+            btnChooseImage.Location = new Point(515, 114);
+            btnChooseImage.Size = new Size(80, 23);
+            btnChooseImage.Click += btnChooseImage_Click;
+            groupBox.Controls.Add(btnChooseImage);
+
+            var btnSave = CreateButton("Save", 92, 238);
+            var btnCancel = CreateButton("Cancel", 219, 238);
+            var btnDelete = CreateButton("Delete", 346, 238);
 
             btnSave.Click += btnSave_Click;
             btnCancel.Click += (_, _) =>
@@ -117,14 +133,37 @@ namespace Event_Reservation_and_Venue_Management_System
                 return;
             }
 
-            DataRepository.VenuesTable.Rows.Add(
-                venueName,
-                (int)numCapacity.Value,
-                location,
-                hourlyRate,
-                cmbStatus.SelectedItem?.ToString() ?? "Available");
+            try
+            {
+                _venueService.Save(0, venueName, cmbVenueType.SelectedItem?.ToString() ?? "Golden Palace",
+                    (int)numCapacity.Value, location, hourlyRate,
+                    cmbStatus.SelectedItem?.ToString() ?? "Available", txtImagePath.Text.Trim(), null);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to save venue.\n\n{ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             DialogResult = DialogResult.OK;
+        }
+
+        private void btnChooseImage_Click(object? sender, EventArgs e)
+        {
+            using OpenFileDialog dialog = new()
+            {
+                Filter = "Image files|*.jpg;*.jpeg;*.png;*.bmp|All files|*.*",
+                Title = "Choose venue image"
+            };
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            string imagesFolder = Path.Combine(AppContext.BaseDirectory, "Images");
+            Directory.CreateDirectory(imagesFolder);
+            string destination = Path.Combine(imagesFolder, $"{Guid.NewGuid():N}{Path.GetExtension(dialog.FileName)}");
+            File.Copy(dialog.FileName, destination, true);
+            txtImagePath.Text = Path.Combine("Images", Path.GetFileName(destination));
         }
     }
 }

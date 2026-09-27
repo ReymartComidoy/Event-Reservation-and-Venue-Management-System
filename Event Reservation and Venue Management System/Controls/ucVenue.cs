@@ -7,6 +7,8 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 {
     public partial class ucVenue : UserControl
     {
+        private readonly VenueService _venueService = new();
+
         public ucVenue()
         {
             InitializeComponent();
@@ -24,7 +26,19 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 
         private void ucVenue_Load(object? sender, EventArgs e)
         {
-            dgvVenues.DataSource = DataRepository.VenuesTable;
+            LoadVenues();
+        }
+
+        private void LoadVenues()
+        {
+            try
+            {
+                dgvVenues.DataSource = _venueService.GetAll();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to load venues. Run DatabaseSchema.sql first.\n\n{ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void dgvVenues_SelectionChanged(object? sender, EventArgs e)
@@ -43,11 +57,19 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
         {
             if (dgvVenues.CurrentRow != null)
             {
+                if (!decimal.TryParse(txtHourlyRate.Text, out decimal rate) || rate < 0)
+                {
+                    MessageBox.Show("Enter a valid hourly rate.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 DataRowView drv = (DataRowView)dgvVenues.CurrentRow.DataBoundItem;
-                drv["VenueName"] = txtVenueName.Text;
-                drv["Capacity"] = (int)numCapacity.Value;
-                drv["PricePerHour"] = decimal.TryParse(txtHourlyRate.Text, out decimal r) ? r : 0;
-                drv["Status"] = cmbStatus.SelectedItem?.ToString() ?? "Available";
+                _venueService.Save(
+                    Convert.ToInt32(drv["Id"]), txtVenueName.Text.Trim(),
+                    drv["VenueType"].ToString() ?? txtVenueName.Text.Trim(),
+                    (int)numCapacity.Value, txtMaintenance.Text.Trim(), rate,
+                    cmbStatus.SelectedItem?.ToString() ?? "Available", drv["ImagePath"] as string, null);
+                LoadVenues();
                 MessageBox.Show("Venue updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -57,8 +79,7 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
             using VenueDetailsForm venueDetailsForm = new VenueDetailsForm();
             if (venueDetailsForm.ShowDialog(FindForm()) == DialogResult.OK)
             {
-                dgvVenues.DataSource = null;
-                dgvVenues.DataSource = DataRepository.VenuesTable;
+                LoadVenues();
             }
         }
 
@@ -66,7 +87,9 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
         {
             if (dgvVenues.CurrentRow != null)
             {
-                dgvVenues.Rows.RemoveAt(dgvVenues.CurrentRow.Index);
+                int id = Convert.ToInt32(((DataRowView)dgvVenues.CurrentRow.DataBoundItem)["Id"]);
+                _venueService.Delete(id);
+                LoadVenues();
             }
         }
 

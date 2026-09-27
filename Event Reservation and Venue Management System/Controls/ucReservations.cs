@@ -7,6 +7,8 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 {
     public partial class ucReservations : UserControl
     {
+        private readonly ReservationService _reservationService = new();
+
         public ucReservations()
         {
             InitializeComponent();
@@ -25,7 +27,14 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 
         private void ucReservations_Load(object? sender, EventArgs e)
         {
-            dgvReservations.DataSource = DataRepository.ReservationsTable;
+            try
+            {
+                dgvReservations.DataSource = _reservationService.GetAll();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to load reservations.\n\n{ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             PopulateDropdowns();
         }
 

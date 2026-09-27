@@ -80,7 +80,6 @@
             // panel1
             // 
             panel1.BackColor = Color.LightSlateGray;
-            panel1.BackgroundImage = (Image)resources.GetObject("panel1.BackgroundImage");
             panel1.Controls.Add(panel5);
             panel1.Controls.Add(panel4);
             panel1.Controls.Add(panel3);
@@ -306,7 +305,6 @@
             // panel6
             // 
             panel6.BackColor = SystemColors.Control;
-            panel6.BackgroundImage = Properties.Resources.download;
             panel6.Controls.Add(groupBox2);
             panel6.Controls.Add(groupBox1);
             panel6.Dock = DockStyle.Fill;

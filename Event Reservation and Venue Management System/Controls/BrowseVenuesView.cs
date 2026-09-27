@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using User = Event_Reservation_and_Venue_Management_System.Models.User;
+using Event_Reservation_and_Venue_Management_System.Services;
 
 namespace Event_Reservation_and_Venue_Management_System.Controls
 {
@@ -11,12 +12,13 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
     {
         private User? _currentUser;
         private DataTable _venueTable = new DataTable();
+        private readonly VenueService _venueService = new();
 
         public BrowseVenuesView()
         {
             InitializeComponent();
             InitializeCategories();
-            InitializeVenueData();
+            LoadVenueData();
         }
 
         public void SetCurrentUser(User user)
@@ -28,31 +30,22 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
         {
             cmbCategoryFilter.Items.Clear();
             cmbCategoryFilter.Items.Add("All Categories");
-            cmbCategoryFilter.Items.Add("Auditorium / Hall");
-            cmbCategoryFilter.Items.Add("Convention Center");
-            cmbCategoryFilter.Items.Add("Outdoor / Park");
-            cmbCategoryFilter.Items.Add("Function Room");
+            cmbCategoryFilter.Items.Add("Golden Palace");
+            cmbCategoryFilter.Items.Add("Big 8");
+            cmbCategoryFilter.Items.Add("Grand palm");
             cmbCategoryFilter.SelectedIndex = 0;
         }
 
-        private void InitializeVenueData()
+        private void LoadVenueData()
         {
-            // Set up internal data structure
-            _venueTable.Columns.Clear();
-            _venueTable.Columns.Add("Id", typeof(int));
-            _venueTable.Columns.Add("Name", typeof(string));
-            _venueTable.Columns.Add("Category", typeof(string));
-            _venueTable.Columns.Add("Capacity", typeof(int));
-            _venueTable.Columns.Add("HourlyRate", typeof(decimal));
-            _venueTable.Columns.Add("Location", typeof(string));
-            _venueTable.Columns.Add("Status", typeof(string));
-
-            // Populate sample venue rows
-            _venueTable.Rows.Add(1, "Tagum City Hall Atrium", "Auditorium / Hall", 500, 2500.00m, "JV Ayala Ave, Tagum City", "Available");
-            _venueTable.Rows.Add(2, "Mankilam Cultural Center", "Convention Center", 1000, 4500.00m, "Mankilam, Tagum City", "Available");
-            _venueTable.Rows.Add(3, "Rotary Park Pavilion", "Outdoor / Park", 300, 1200.00m, "Magugpo Central, Tagum City", "Available");
-            _venueTable.Rows.Add(4, "Tagum Trade & Cultural Center", "Convention Center", 800, 3500.00m, "Rizal St, Tagum City", "Under Maintenance");
-            _venueTable.Rows.Add(5, "Energy Park Amphitheater", "Outdoor / Park", 1500, 3000.00m, "Apokon, Tagum City", "Available");
+            try
+            {
+                _venueTable = _venueService.GetAll();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to load venues.\n\n{ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             ApplyFilters();
         }
@@ -66,8 +59,8 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 
             foreach (DataRow row in _venueTable.Rows)
             {
-                string venueName = row["Name"].ToString() ?? "";
-                string category = row["Category"].ToString() ?? "";
+                string venueName = row["VenueName"].ToString() ?? "";
+                string category = row["VenueType"].ToString() ?? "";
                 string location = row["Location"].ToString() ?? "";
 
                 bool matchesSearch = string.IsNullOrEmpty(searchKeyword) ||
@@ -80,10 +73,10 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
                 {
                     dgvVenues.Rows.Add(
                         row["Id"],
-                        row["Name"],
-                        row["Category"],
+                        row["VenueName"],
+                        row["VenueType"],
                         $"{Convert.ToInt32(row["Capacity"]):N0} pax",
-                        $"₱ {Convert.ToDecimal(row["HourlyRate"]):N2} / hr",
+                        $"₱ {Convert.ToDecimal(row["PricePerHour"]):N2} / hr",
                         row["Location"],
                         row["Status"]
                     );
