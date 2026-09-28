@@ -15,6 +15,9 @@ namespace Event_Reservation_and_Venue_Management_System
         private readonly Button btnSave = new Button();
         private readonly Button btnCancel = new Button();
         private readonly Button btnDelete = new Button();
+        private readonly VenueService _venueService = new();
+        private readonly EventService _eventService = new();
+        private DataTable _venues = new();
 
         public EventDetailsForm()
         {
@@ -112,7 +115,8 @@ namespace Event_Reservation_and_Venue_Management_System
 
         private void PopulateVenues()
         {
-            foreach (DataRow row in DataRepository.VenuesTable.Rows)
+            _venues = _venueService.GetAll();
+            foreach (DataRow row in _venues.Rows)
             {
                 cmbVenue.Items.Add(row["VenueName"].ToString());
             }
@@ -149,23 +153,10 @@ namespace Event_Reservation_and_Venue_Management_System
                 return;
             }
 
-            int maxId = 100;
-            foreach (DataRow row in DataRepository.EventsTable.Rows)
-            {
-                if (row["EventID"] != DBNull.Value)
-                {
-                    maxId = Math.Max(maxId, Convert.ToInt32(row["EventID"]));
-                }
-            }
-
-            DataRepository.EventsTable.Rows.Add(
-                maxId + 1,
-                eventName,
-                venue,
-                dtpEventDate.Value.ToString("yyyy-MM-dd"),
-                "09:00 AM",
-                "Upcoming",
-                bookings);
+            DataRow? venueRow = _venues.AsEnumerable().FirstOrDefault(row =>
+                string.Equals(row["VenueName"]?.ToString(), venue, StringComparison.OrdinalIgnoreCase));
+            _eventService.Save(0, eventName, venueRow == null ? null : Convert.ToInt32(venueRow["Id"]),
+                dtpEventDate.Value, null, bookings, "Upcoming");
 
             DialogResult = DialogResult.OK;
         }

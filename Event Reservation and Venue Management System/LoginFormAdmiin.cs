@@ -24,8 +24,8 @@ namespace Event_Reservation_and_Venue_Management_System
             _clientMode = clientMode;
             InitializeComponent();
             ConfigureLoginMode();
-            kryptonButton1.Click += LoginButton_Click;
-            kryptonButton2.Click += SwitchLoginModeButton_Click;
+            button2.Click += LoginButton_Click;
+            button4.Click += SwitchLoginModeButton_Click;
 
             Button closeButton = new()
             {
@@ -49,25 +49,26 @@ namespace Event_Reservation_and_Venue_Management_System
             kryptonLabel1.Values.Text = _clientMode
                 ? "Let's get Started on Your Client Account."
                 : "Let's get Started on Your Admin Account.";
-            kryptonButton2.Values.Text = _clientMode ? "Login Admin" : "Login Client";
+            button2.Text = "Login";
+            button4.Text = _clientMode ? "Login Admin" : "Login Client";
         }
 
         private void LoginButton_Click(object? sender, EventArgs e)
         {
-            string email = kryptonTextBox1.Text.Trim();
-            string password = kryptonTextBox3.Text;
+            string email = button1.Text.Trim();
+            string password = button3.Text;
 
             if (!Regex.IsMatch(email, @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
             {
                 MessageBox.Show("Enter a valid email address containing @ and a domain.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                kryptonTextBox1.Focus();
+                button1.Focus();
                 return;
             }
 
             if (!Regex.IsMatch(password, @"^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$"))
             {
                 MessageBox.Show("Password must be at least 8 characters and include one capital letter, one number, and one special character.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                kryptonTextBox3.Focus();
+                button3.Focus();
                 return;
             }
 
@@ -122,6 +123,11 @@ namespace Event_Reservation_and_Venue_Management_System
             {
                 Show();
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

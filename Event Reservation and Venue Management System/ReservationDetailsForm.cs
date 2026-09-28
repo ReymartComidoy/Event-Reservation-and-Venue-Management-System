@@ -14,6 +14,13 @@ namespace Event_Reservation_and_Venue_Management_System
         private readonly DateTimePicker dtpReservationDate = new DateTimePicker();
         private readonly NumericUpDown numTotalAmount = new NumericUpDown();
         private readonly ComboBox cmbStatus = new ComboBox();
+        private readonly ClientService _clientService = new();
+        private readonly EventService _eventService = new();
+        private readonly VenueService _venueService = new();
+        private readonly ReservationService _reservationService = new();
+        private DataTable _clients = new();
+        private DataTable _events = new();
+        private DataTable _venues = new();
 
         public ReservationDetailsForm()
         {
@@ -108,17 +115,20 @@ namespace Event_Reservation_and_Venue_Management_System
 
         private void PopulateOptions()
         {
-            foreach (DataRow row in DataRepository.ClientsTable.Rows)
+            _clients = _clientService.GetAll();
+            _events = _eventService.GetAll();
+            _venues = _venueService.GetAll();
+            foreach (DataRow row in _clients.Rows)
             {
                 cmbClient.Items.Add(row["ClientName"].ToString());
             }
 
-            foreach (DataRow row in DataRepository.EventsTable.Rows)
+            foreach (DataRow row in _events.Rows)
             {
                 cmbEvent.Items.Add(row["EventName"].ToString());
             }
 
-            foreach (DataRow row in DataRepository.VenuesTable.Rows)
+            foreach (DataRow row in _venues.Rows)
             {
                 cmbVenue.Items.Add(row["VenueName"].ToString());
             }
@@ -146,15 +156,14 @@ namespace Event_Reservation_and_Venue_Management_System
                 return;
             }
 
-            string newId = $"RES-{2000 + DataRepository.ReservationsTable.Rows.Count + 1}";
-            DataRepository.ReservationsTable.Rows.Add(
-                newId,
-                cmbClient.SelectedItem.ToString(),
-                cmbEvent.SelectedItem.ToString(),
-                cmbVenue.SelectedItem.ToString(),
-                dtpReservationDate.Value.ToString("yyyy-MM-dd"),
-                numTotalAmount.Value,
-                cmbStatus.SelectedItem?.ToString() ?? "Confirmed");
+            DataRow? client = _clients.AsEnumerable().FirstOrDefault(row => row["ClientName"].ToString() == cmbClient.SelectedItem.ToString());
+            DataRow? venue = _venues.AsEnumerable().FirstOrDefault(row => row["VenueName"].ToString() == cmbVenue.SelectedItem.ToString());
+            if (client == null || venue == null)
+                return;
+
+            _reservationService.Save(Convert.ToInt32(client["ClientId"]), Convert.ToInt32(venue["Id"]),
+                cmbEvent.SelectedItem.ToString()!, dtpReservationDate.Value, string.Empty, 1, string.Empty,
+                numTotalAmount.Value);
 
             DialogResult = DialogResult.OK;
         }

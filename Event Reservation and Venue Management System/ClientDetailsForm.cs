@@ -14,6 +14,8 @@ namespace Event_Reservation_and_Venue_Management_System
         private readonly TextBox txtCompany = new TextBox();
         private readonly ComboBox cmbClientType = new ComboBox();
         private readonly ComboBox cmbStatus = new ComboBox();
+        private readonly TextBox txtPassword = new TextBox { UseSystemPasswordChar = true };
+        private readonly ClientService _clientService = new();
 
         public ClientDetailsForm()
         {
@@ -28,14 +30,14 @@ namespace Event_Reservation_and_Venue_Management_System
             MaximizeBox = false;
             MinimizeBox = false;
             ShowInTaskbar = false;
-            ClientSize = new Size(744, 238);
+            ClientSize = new Size(744, 278);
 
             var groupBox = new GroupBox
             {
                 Text = "Client Details",
                 Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold),
                 Location = new Point(10, 10),
-                Size = new Size(734, 218)
+                Size = new Size(734, 258)
             };
 
             AddField(groupBox, "Full Name:", txtFullName, 10, 34, 249, 23);
@@ -44,6 +46,7 @@ namespace Event_Reservation_and_Venue_Management_System
             AddField(groupBox, "Company:", txtCompany, 357, 34, 214, 23);
             AddField(groupBox, "Client Type:", cmbClientType, 357, 74, 214, 23);
             AddField(groupBox, "Status:", cmbStatus, 357, 114, 214, 23);
+            AddField(groupBox, "Password:", txtPassword, 357, 154, 214, 23);
 
             ConfigureCombo(cmbClientType);
             cmbClientType.Items.AddRange(new object[] { "Corporate", "Individual" });
@@ -52,9 +55,9 @@ namespace Event_Reservation_and_Venue_Management_System
             cmbStatus.Items.AddRange(new object[] { "Active", "Inactive" });
             cmbStatus.SelectedItem = "Active";
 
-            var btnSave = CreateButton("Save", 92, 166);
-            var btnCancel = CreateButton("Cancel", 219, 166);
-            var btnDelete = CreateButton("Delete", 346, 166);
+            var btnSave = CreateButton("Save", 92, 206);
+            var btnCancel = CreateButton("Cancel", 219, 206);
+            var btnDelete = CreateButton("Delete", 346, 206);
 
             btnSave.Click += btnSave_Click;
             btnCancel.Click += (_, _) =>
@@ -110,21 +113,13 @@ namespace Event_Reservation_and_Venue_Management_System
             string phone = txtPhone.Text.Trim();
             string company = txtCompany.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(phone))
+            if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(phone) || string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                MessageBox.Show("Enter the client's name, email, and phone.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Enter the client's name, email, phone, and password.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string newId = $"CLT-{1000 + DataRepository.ClientsTable.Rows.Count + 1}";
-            DataRepository.ClientsTable.Rows.Add(
-                newId,
-                fullName,
-                email,
-                phone,
-                string.IsNullOrWhiteSpace(company) ? "N/A" : company,
-                cmbClientType.SelectedItem?.ToString() ?? "Individual",
-                cmbStatus.SelectedItem?.ToString() ?? "Active");
+            _clientService.Create(email, txtPassword.Text, fullName);
 
             DialogResult = DialogResult.OK;
         }

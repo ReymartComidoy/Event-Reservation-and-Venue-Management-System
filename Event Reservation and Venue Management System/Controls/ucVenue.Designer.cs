@@ -65,7 +65,7 @@
             // 
             // txtSearch
             // 
-            txtSearch.Location = new Point(3, 33);
+            txtSearch.Location = new Point(0, 31);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(262, 23);
             txtSearch.TabIndex = 3;
@@ -77,7 +77,7 @@
             btnAddNewVenue.ForeColor = SystemColors.Control;
             btnAddNewVenue.Location = new Point(271, 29);
             btnAddNewVenue.Name = "btnAddNewVenue";
-            btnAddNewVenue.Size = new Size(122, 29);
+            btnAddNewVenue.Size = new Size(90, 29);
             btnAddNewVenue.TabIndex = 5;
             btnAddNewVenue.Text = "+ Add New";
             btnAddNewVenue.UseVisualStyleBackColor = false;
@@ -88,7 +88,7 @@
             dgvVenues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvVenues.BackgroundColor = Color.Gray;
             dgvVenues.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvVenues.Location = new Point(3, 62);
+            dgvVenues.Location = new Point(4, 58);
             dgvVenues.Name = "dgvVenues";
             dgvVenues.Size = new Size(827, 346);
             dgvVenues.TabIndex = 6;
@@ -248,7 +248,7 @@
             Controls.Add(txtSearch);
             Controls.Add(label1);
             Name = "ucVenue";
-            Size = new Size(764, 550);
+            Size = new Size(831, 574);
             Load += ucVenue_Load;
             ((ISupportInitialize)dgvVenues).EndInit();
             groupBox1.ResumeLayout(false);

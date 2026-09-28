@@ -10,7 +10,10 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
     public partial class ucDashboard : UserControl
     {
         private readonly INavigationService? _navigationService;
-        private DataTable _eventsDataTable = DataRepository.EventsTable;
+        private readonly EventService _eventService = new();
+        private readonly ReservationService _reservationService = new();
+        private readonly VenueService _venueService = new();
+        private DataTable _eventsDataTable = new();
 
         // Parameterless constructor for WinForms Designer
         public ucDashboard()
@@ -56,15 +59,26 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 
         public void LoadDashboardData()
         {
-            // Bind shared Events table
-            _eventsDataTable = DataRepository.EventsTable;
-            dgvDashboardEvents.DataSource = _eventsDataTable;
+            try
+            {
+                _eventsDataTable = _eventService.GetAll();
+                DataTable reservations = _reservationService.GetAll();
+                DataTable venues = _venueService.GetAll();
+                dgvDashboardEvents.DataSource = _eventsDataTable;
 
-            // Dynamically calculate counts across all interconnected sections
-            lblActiveEventsCount.Text = DataRepository.EventsTable.Select("Status = 'Upcoming' OR Status = 'Active'").Length.ToString();
-            lblUpcomingReservationsCount.Text = DataRepository.ReservationsTable.Select("Status = 'Confirmed' OR Status = 'Pending'").Length.ToString();
-            lblTotalBookingsTodayCount.Text = DataRepository.ReservationsTable.Rows.Count.ToString();
-            lblVenuesAvailableCount.Text = $"{DataRepository.VenuesTable.Select("Status = 'Available'").Length}";
+                lblActiveEventsCount.Text = _eventsDataTable.AsEnumerable()
+                    .Count(row => row["Status"]?.ToString() is "Upcoming" or "Active").ToString();
+                lblUpcomingReservationsCount.Text = reservations.AsEnumerable()
+                    .Count(row => row["Status"]?.ToString() is "Confirmed" or "Pending").ToString();
+                lblTotalBookingsTodayCount.Text = reservations.AsEnumerable()
+                    .Count(row => DateTime.TryParse(row["ReservationDate"]?.ToString(), out DateTime date) && date.Date == DateTime.Today).ToString();
+                lblVenuesAvailableCount.Text = venues.AsEnumerable()
+                    .Count(row => string.Equals(row["Status"]?.ToString(), "Available", StringComparison.OrdinalIgnoreCase)).ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to load dashboard data.\n\n{ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 

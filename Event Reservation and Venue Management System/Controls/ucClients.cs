@@ -7,6 +7,9 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 {
     public partial class ucClients : UserControl
     {
+        private readonly ClientService _clientService = new();
+        private DataTable _clients = new();
+
         public ucClients()
         {
             InitializeComponent();
@@ -24,7 +27,20 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
 
         private void ucClients_Load(object? sender, EventArgs e)
         {
-            dgvClients.DataSource = DataRepository.ClientsTable;
+            LoadClients();
+        }
+
+        private void LoadClients()
+        {
+            try
+            {
+                _clients = _clientService.GetAll();
+                dgvClients.DataSource = _clients;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to load clients.\n\n{ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void dgvClients_SelectionChanged(object? sender, EventArgs e)
@@ -36,7 +52,7 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
                 txtEmail.Text = row.Cells["Email"].Value?.ToString();
                 txtPhone.Text = row.Cells["Phone"].Value?.ToString();
                 txtCompany.Text = row.Cells["Company"].Value?.ToString();
-                cmbClientType.SelectedItem = row.Cells["Type"].Value?.ToString();
+                cmbClientType.SelectedItem = row.Cells["ClientType"].Value?.ToString();
                 cmbStatus.SelectedItem = row.Cells["Status"].Value?.ToString();
             }
         }
@@ -46,12 +62,10 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
             if (dgvClients.CurrentRow != null)
             {
                 DataRowView drv = (DataRowView)dgvClients.CurrentRow.DataBoundItem;
-                drv["ClientName"] = txtFullName.Text;
-                drv["Email"] = txtEmail.Text;
-                drv["Phone"] = txtPhone.Text;
-                drv["Company"] = txtCompany.Text;
-                drv["Type"] = cmbClientType.SelectedItem?.ToString();
-                drv["Status"] = cmbStatus.SelectedItem?.ToString();
+                _clientService.Update(
+                    Convert.ToInt32(drv["ClientId"]), txtFullName.Text.Trim(), txtEmail.Text.Trim(),
+                    string.Equals(cmbStatus.SelectedItem?.ToString(), "Active", StringComparison.OrdinalIgnoreCase));
+                LoadClients();
                 MessageBox.Show("Client details updated!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -61,8 +75,7 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
             using ClientDetailsForm clientDetailsForm = new ClientDetailsForm();
             if (clientDetailsForm.ShowDialog(FindForm()) == DialogResult.OK)
             {
-                dgvClients.DataSource = null;
-                dgvClients.DataSource = DataRepository.ClientsTable;
+                LoadClients();
             }
         }
 
@@ -70,7 +83,9 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
         {
             if (dgvClients.CurrentRow != null)
             {
-                dgvClients.Rows.RemoveAt(dgvClients.CurrentRow.Index);
+                int id = Convert.ToInt32(((DataRowView)dgvClients.CurrentRow.DataBoundItem)["ClientId"]);
+                _clientService.Delete(id);
+                LoadClients();
             }
         }
 

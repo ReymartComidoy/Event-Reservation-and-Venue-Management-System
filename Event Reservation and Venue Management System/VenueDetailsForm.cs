@@ -55,7 +55,7 @@ namespace Event_Reservation_and_Venue_Management_System
             cmbStatus.Items.AddRange(new object[] { "Available", "Unavailable", "Maintenance" });
             cmbStatus.SelectedItem = "Available";
             ConfigureCombo(cmbVenueType);
-            cmbVenueType.Items.AddRange(new object[] { "Golden Palace", "Big 8", "Grand palm" });
+            cmbVenueType.Items.AddRange(new object[] { "Golden Palace", "Big 8", "Grand Palm" });
             cmbVenueType.SelectedIndex = 0;
 
             btnChooseImage.Text = "Browse";

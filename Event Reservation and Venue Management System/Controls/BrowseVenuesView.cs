@@ -32,7 +32,7 @@ namespace Event_Reservation_and_Venue_Management_System.Controls
             cmbCategoryFilter.Items.Add("All Categories");
             cmbCategoryFilter.Items.Add("Golden Palace");
             cmbCategoryFilter.Items.Add("Big 8");
-            cmbCategoryFilter.Items.Add("Grand palm");
+            cmbCategoryFilter.Items.Add("Grand Palm");
             cmbCategoryFilter.SelectedIndex = 0;
         }
 

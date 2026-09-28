@@ -28,6 +28,56 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE dbo.Client_Create
+	@Email NVARCHAR(255),
+	@PasswordHash NVARCHAR(128),
+	@FullName NVARCHAR(150)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	INSERT dbo.Users (Email, PasswordHash, FullName, Role, IsActive)
+	VALUES (@Email, @PasswordHash, @FullName, 'Client', 1);
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.Client_GetAll
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT Id AS ClientId, FullName AS ClientName, Email,
+		   CAST('' AS NVARCHAR(50)) AS Phone,
+		   CAST('' AS NVARCHAR(150)) AS Company,
+		   CAST('Individual' AS NVARCHAR(30)) AS ClientType,
+		   CASE WHEN IsActive = 1 THEN 'Active' ELSE 'Inactive' END AS Status
+	FROM dbo.Users
+	WHERE Role = 'Client'
+	ORDER BY FullName;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.Client_Update
+	@Id INT,
+	@FullName NVARCHAR(150),
+	@Email NVARCHAR(255),
+	@IsActive BIT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	UPDATE dbo.Users
+	SET FullName = @FullName, Email = @Email, IsActive = @IsActive
+	WHERE Id = @Id AND Role = 'Client';
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.Client_Delete
+	@Id INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	UPDATE dbo.Users SET IsActive = 0 WHERE Id = @Id AND Role = 'Client';
+END
+GO
+
 IF OBJECT_ID(N'dbo.Venues', N'U') IS NULL
 BEGIN
 	CREATE TABLE dbo.Venues
@@ -42,6 +92,64 @@ BEGIN
 		ImagePath NVARCHAR(500) NULL,
 		CreatedBy INT NULL CONSTRAINT FK_Venues_Users REFERENCES dbo.Users(Id)
 	);
+END
+GO
+
+IF OBJECT_ID(N'dbo.Events', N'U') IS NULL
+BEGIN
+	CREATE TABLE dbo.Events
+	(
+		Id INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Events PRIMARY KEY,
+		EventName NVARCHAR(200) NOT NULL,
+		VenueId INT NULL CONSTRAINT FK_Events_Venues REFERENCES dbo.Venues(Id),
+		EventDate DATE NOT NULL,
+		EventTime TIME(0) NULL,
+		Bookings INT NOT NULL CONSTRAINT DF_Events_Bookings DEFAULT (0),
+		Status NVARCHAR(30) NOT NULL CONSTRAINT DF_Events_Status DEFAULT ('Upcoming')
+	);
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.Event_GetAll
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT e.Id, e.EventName, v.VenueName AS Venue, e.VenueId,
+		   e.EventDate AS [Date], e.EventTime AS [Time], e.Bookings, e.Status
+	FROM dbo.Events e
+	LEFT JOIN dbo.Venues v ON v.Id = e.VenueId
+	ORDER BY e.EventDate, e.EventName;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.Event_Save
+	@Id INT = NULL,
+	@EventName NVARCHAR(200),
+	@VenueId INT = NULL,
+	@EventDate DATE,
+	@EventTime TIME(0) = NULL,
+	@Bookings INT = 0,
+	@Status NVARCHAR(30) = 'Upcoming'
+AS
+BEGIN
+	SET NOCOUNT ON;
+	IF @Id IS NULL OR @Id = 0
+		INSERT dbo.Events (EventName, VenueId, EventDate, EventTime, Bookings, Status)
+		VALUES (@EventName, @VenueId, @EventDate, @EventTime, @Bookings, @Status);
+	ELSE
+		UPDATE dbo.Events
+		SET EventName=@EventName, VenueId=@VenueId, EventDate=@EventDate,
+			EventTime=@EventTime, Bookings=@Bookings, Status=@Status
+		WHERE Id=@Id;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.Event_Delete
+	@Id INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DELETE FROM dbo.Events WHERE Id = @Id;
 END
 GO
 
@@ -62,6 +170,24 @@ BEGIN
 		CreatedAt DATETIME2 NOT NULL CONSTRAINT DF_Reservations_CreatedAt DEFAULT (SYSUTCDATETIME())
 	);
 END
+GO
+
+DELETE r
+FROM dbo.Reservations r
+INNER JOIN dbo.Venues v ON v.Id = r.VenueId
+WHERE v.VenueName IN ('Auditorium', 'Executive Boardroom', 'Garden Terrace', 'Grand Ballroom', 'Outdoor Pavilion');
+
+DELETE e
+FROM dbo.Events e
+INNER JOIN dbo.Venues v ON v.Id = e.VenueId
+WHERE v.VenueName IN ('Auditorium', 'Executive Boardroom', 'Garden Terrace', 'Grand Ballroom', 'Outdoor Pavilion');
+
+DELETE FROM dbo.Venues
+WHERE VenueName IN ('Auditorium', 'Executive Boardroom', 'Garden Terrace', 'Grand Ballroom', 'Outdoor Pavilion');
+
+UPDATE dbo.Venues
+SET VenueName = 'Grand Palm', VenueType = 'Grand Palm'
+WHERE VenueName = 'Grand palm';
 GO
 
 CREATE OR ALTER PROCEDURE dbo.User_Login
@@ -150,13 +276,44 @@ CREATE OR ALTER PROCEDURE dbo.Reservation_GetAll
 AS
 BEGIN
 	SET NOCOUNT ON;
-	SELECT r.Id AS [Reservation ID], u.FullName AS [Client Name], r.EventTitle AS [Event Name],
-		   v.VenueName AS [Venue], r.ReservationDate AS [Reservation Date], r.Status,
-		   r.TimeSlot, r.GuestCount, r.TotalFee
+	SELECT r.Id, r.ClientId, r.VenueId, r.Id AS [Reservation ID],
+		   u.FullName AS ClientName, r.EventTitle AS EventName,
+		   v.VenueName AS Venue, r.ReservationDate, r.Status,
+		   r.TimeSlot, r.GuestCount, r.TotalFee AS TotalAmount
 	FROM dbo.Reservations r
 	INNER JOIN dbo.Users u ON u.Id = r.ClientId
 	INNER JOIN dbo.Venues v ON v.Id = r.VenueId
 	ORDER BY r.ReservationDate DESC;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.Reservation_Update
+	@Id INT,
+	@ClientId INT,
+	@VenueId INT,
+	@EventTitle NVARCHAR(200),
+	@ReservationDate DATE,
+	@TimeSlot NVARCHAR(100),
+	@GuestCount INT,
+	@TotalFee DECIMAL(18,2),
+	@Status NVARCHAR(30)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	UPDATE dbo.Reservations
+	SET ClientId=@ClientId, VenueId=@VenueId, EventTitle=@EventTitle,
+		ReservationDate=@ReservationDate, TimeSlot=@TimeSlot,
+		GuestCount=@GuestCount, TotalFee=@TotalFee, Status=@Status
+	WHERE Id=@Id;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.Reservation_Delete
+	@Id INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DELETE FROM dbo.Reservations WHERE Id = @Id;
 END
 GO
 
@@ -177,6 +334,6 @@ BEGIN
 	INSERT dbo.Venues (VenueName, VenueType, Capacity, Location, PricePerHour, Status)
 	VALUES ('Golden Palace', 'Golden Palace', 500, 'Main Building', 2500, 'Available'),
 		   ('Big 8', 'Big 8', 300, 'East Wing', 1800, 'Available'),
-		   ('Grand palm', 'Grand palm', 200, 'Outdoor Area', 1500, 'Available');
+		   ('Grand Palm', 'Grand Palm', 200, 'Outdoor Area', 1500, 'Available');
 END
 GO
